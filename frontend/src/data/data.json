@@ -1,0 +1,186 @@
+{
+  "Header": {
+    "title": "Welcome to Burguret Water Project",
+    "paragraph": "Providing clean, reliable, and sustainable water to our community. The Burguret Water Project is dedicated to improving health, supporting livelihoods, and ensuring every household has access to safe water for daily needs."
+  },
+  "About": {
+    "paragraph": "The Burguret Water Project was established to provide clean and reliable water to households, schools, and farms in our community. By harnessing sustainable water management practices, we aim to improve public health, support agriculture, and empower families with access to safe water every day.",
+    "Why": [
+      "Reliable access to clean and safe drinking water",
+      "Improved community health and reduced waterborne diseases",
+      "Sustainable water management for future generations",
+      "Support for local farmers and livelihoods"
+    ],
+    "Why2": [
+      "Community-driven and locally managed initiative",
+      "Affordable and accessible water services",
+      "Environmental conservation and watershed protection",
+      "Commitment to long-term sustainability"
+    ]
+  },
+  "Gallery": [
+    {
+      "title": "Household Water",
+      "largeImage": "img/portfolio/01-large.jpg",
+      "smallImage": "img/portfolio/01-small.jpg"
+    },
+    {
+      "title": "Household cleaning",
+      "largeImage": "img/portfolio/02-large.jpg",
+      "smallImage": "img/portfolio/02-small.jpg"
+    },
+    {
+      "title": "Household Repair",
+      "largeImage": "img/portfolio/03-large.jpg",
+      "smallImage": "img/portfolio/03-small.jpg"
+    },
+    {
+      "title": "Digging",
+      "largeImage": "img/portfolio/04-large.jpg",
+      "smallImage": "img/portfolio/04-small.jpg"
+    },
+    {
+      "title": "River",
+      "largeImage": "img/portfolio/05-large.jpg",
+      "smallImage": "img/portfolio/05-small.jpg"
+    },
+    {
+      "title": "Swimming Pool",
+      "largeImage": "img/portfolio/06-large.jpg",
+      "smallImage": "img/portfolio/06-small.jpg"
+    },
+    {
+      "title": "Irrigation",
+      "largeImage": "img/portfolio/07-large.jpg",
+      "smallImage": "img/portfolio/07-small.jpg"
+    },
+    {
+      "title": "Hospital",
+      "largeImage": "img/portfolio/08-large.jpg",
+      "smallImage": "img/portfolio/08-small.jpg"
+    },
+    {
+      "title": "River",
+      "largeImage": "img/portfolio/09-large.jpg",
+      "smallImage": "img/portfolio/09-small.jpg"
+    }
+  ],
+  "Services": [
+    {
+      "icon": "fa fa-tint",
+      "name": "Clean Water Supply",
+      "text": "We provide households and schools with reliable access to safe, clean water, reducing the risks of waterborne diseases."
+    },
+    {
+      "icon": "fa fa-glass",
+      "name": "Community Water Points",
+      "text": "Our strategically placed water kiosks and taps make it easier for families to fetch water close to home."
+    },
+    {
+      "icon": "fa fa-leaf",
+      "name": "Support for Agriculture",
+      "text": "We ensure farmers have access to water for irrigation, helping to increase food production and improve livelihoods."
+    },
+    {
+      "icon": "fa fa-recycle",
+      "name": "Sustainable Water Management",
+      "text": "We promote water conservation practices and protect local water sources for future generations."
+    },
+    {
+      "icon": "fa fa-users",
+      "name": "Community Empowerment",
+      "text": "We engage residents in decision-making, ensuring the project reflects the needs and priorities of the community."
+    },
+    {
+      "icon": "fa fa-graduation-cap",
+      "name": "Education & Awareness",
+      "text": "We run awareness campaigns in schools and villages to teach the importance of hygiene, sanitation, and water conservation."
+    }
+  ],
+  "Testimonials": [
+    {
+      "img": "img/testimonials/01.jpg",
+      "text": "Before this project, we walked long distances for water every day. Now, clean water is just nearby, saving time and giving families peace of mind.",
+      "name": "Mary W., Community Member"
+    },
+    {
+      "img": "img/testimonials/02.jpg",
+      "text": "The water system has transformed farming here. With reliable irrigation throughout the year, we can grow vegetables consistently, support our families, and even sell produce locally.",
+      "name": "James K., Local Farmer"
+    },
+    {
+      "img": "img/testimonials/03.jpg",
+      "text": "Our children no longer miss school because of waterborne diseases. With safe drinking water, their health is better, and they now have a brighter future ahead. Thank you and lets continue with the spirit.",
+      "name": "Grace N., Parent"
+    },
+    {
+      "img": "img/testimonials/04.jpg",
+      "text": "As a health worker, I’ve witnessed a big drop in typhoid and diarrhea cases. Clean water has significantly improved community health and reduced preventable illness greatly.",
+      "name": "Dr. Peter M., Health Officer"
+    },
+    {
+      "img": "img/testimonials/05.jpg",
+      "text": "The water kiosks are affordable and reliable for everyone. They are well-maintained by the community, ensuring equal access to safe drinking water at all times.",
+      "name": "Samuel L., Youth Leader"
+    },
+    {
+      "img": "img/testimonials/06.jpg",
+      "text": "This project has united our village in responsibility. Together, we protect and maintain the water system, ensuring it serves current families and future generations reliably.",
+      "name": "Agnes K., Community Elder"
+    }
+  ],
+  "Team": [
+    {
+      "img": "img/team/01.jpg",
+      "name": "David",
+      "job": "Project Director – Oversees the entire Burguret Water Project, coordinating partners, managing resources, and ensuring sustainable delivery of clean water to the community."
+    },
+    {
+      "img": "img/team/02.jpg",
+      "name": "Joseph",
+      "job": "Community Engagement Lead – Works closely with local households, organizes training sessions, and ensures families actively participate in maintaining the water system."
+    },
+    {
+      "img": "img/team/03.jpg",
+      "name": "Mary",
+      "job": "Senior Engineer – Designs, installs, and maintains the water infrastructure, ensuring efficiency, reliability, and access to clean water for all community members."
+    },
+    {
+      "img": "img/team/04.jpg",
+      "name": "Grace",
+      "job": "Monitoring & Evaluation Officer – Tracks progress, collects feedback from users, and measures the impact of the project on health, farming, and livelihoods."
+    }
+  ],
+
+  "Contact": {
+    "address": "Burguret",
+    "phone": "+254 123 456 1234",
+    "email": "info@company.com",
+    "facebook": "fb.com",
+    "twitter": "twitter.com",
+    "youtube": "youtube.com"
+  },
+  "Features": [
+  {
+    "icon": "fa fa-tint",
+    "title": "Clean & Safe Water",
+    "text": "Our system ensures access to clean, filtered, and safe drinking water for every household in the community."
+  },
+  {
+    "icon": "fa fa-bolt",
+    "title": "Reliable Power Backup",
+    "text": "Battery and generator backup keep pumps running during outages, ensuring uninterrupted water supply."
+  },
+  {
+    "icon": "fa fa-cogs",
+    "title": "Low Maintenance",
+    "text": "Designed for rural environments with simple components that require minimal upkeep and easy repairs."
+  },
+  {
+    "icon": "fa fa-users",
+    "title": "Community-Centered",
+    "text": "Empowers the local community with training, management tools, and equal access to water resources."
+  }
+]
+
+}

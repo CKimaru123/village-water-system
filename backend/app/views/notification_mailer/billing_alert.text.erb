@@ -1,0 +1,17 @@
+Burguret Water Project — Billing Alert
+=======================================
+
+Hello <%= @user.display_name %>,
+
+<%= @title %>
+<%= '-' * @title.length %>
+
+<%= @message %>
+
+<% if @action_url.present? %>
+View billing details: <%= @action_url %>
+<% end %>
+
+---
+© <%= Time.current.year %> Burguret Water Project
+Manage preferences: <%= @frontend_url %>/client/notifications

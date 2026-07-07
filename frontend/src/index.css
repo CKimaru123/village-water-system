@@ -1,0 +1,36 @@
+@media screen and (max-width: 400px) {
+  #features {
+    padding: 20px;
+    width: 111%;
+  }
+  #about,
+  #services,
+  #testimonials,
+  #team,
+  #contact,
+  #footer {
+    width: 111%;
+  }
+
+  #portfolio {
+    width: 110%;
+  }
+}
+
+  /* RTL support helpers */
+  html[dir="rtl"] {
+    direction: rtl;
+  }
+
+  /* Flip icons or arrows when in RTL */
+  html[dir="rtl"] .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  /* Ensure text inputs use RTL when page direction is RTL */
+  html[dir="rtl"] input,
+  html[dir="rtl"] textarea,
+  html[dir="rtl"] select {
+    direction: rtl;
+  }
+

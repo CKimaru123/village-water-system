@@ -1,0 +1,19 @@
+Burguret Water Project — Usage Alert
+======================================
+
+Hello <%= @user.display_name %>,
+
+<%= @title %>
+<%= '-' * @title.length %>
+
+<%= @message %>
+
+<% if @action_url.present? %>
+View usage details: <%= @action_url %>
+<% end %>
+
+Report an issue: <%= @frontend_url %>/client/report-issue
+
+---
+© <%= Time.current.year %> Burguret Water Project
+Manage preferences: <%= @frontend_url %>/client/notifications

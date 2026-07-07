@@ -1,0 +1,17 @@
+Burguret Water Project — Announcement
+=======================================
+
+Hello <%= @user.display_name %>,
+
+<%= @title %>
+<%= '-' * @title.length %>
+
+<%= @message %>
+
+<% if @action_url.present? %>
+Read more: <%= @action_url %>
+<% end %>
+
+---
+© <%= Time.current.year %> Burguret Water Project
+Manage preferences: <%= @frontend_url %>/client/notifications

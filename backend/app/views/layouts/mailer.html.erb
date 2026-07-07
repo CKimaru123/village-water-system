@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Burguret Water Project</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:24px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+          <!-- Header -->
+          <tr>
+            <td style="background-color:#141b2d;border-radius:8px 8px 0 0;padding:24px 32px;text-align:center;">
+              <h1 style="margin:0;color:#4cceac;font-size:22px;font-weight:700;letter-spacing:0.5px;">
+                💧 Burguret Water Project
+              </h1>
+              <p style="margin:4px 0 0;color:#a1a4ab;font-size:13px;">Community Water Management System</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background-color:#ffffff;padding:32px;border-left:1px solid #e0e0e0;border-right:1px solid #e0e0e0;">
+              <%= yield %>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#f8f9fa;border:1px solid #e0e0e0;border-top:none;border-radius:0 0 8px 8px;padding:20px 32px;text-align:center;">
+              <p style="margin:0 0 8px;color:#666;font-size:12px;">
+                You are receiving this email because you have an account with Burguret Water Project.
+              </p>
+              <p style="margin:0;color:#999;font-size:11px;">
+                To manage your notification preferences, visit your
+                <a href="<%= ENV.fetch('FRONTEND_URL', 'http://localhost:3000') %>/client/notifications"
+                   style="color:#4cceac;text-decoration:none;">notification settings</a>.
+                &nbsp;|&nbsp;
+                <a href="<%= ENV.fetch('FRONTEND_URL', 'http://localhost:3000') %>"
+                   style="color:#4cceac;text-decoration:none;">Visit Dashboard</a>
+              </p>
+              <p style="margin:8px 0 0;color:#bbb;font-size:10px;">
+                &copy; <%= Time.current.year %> Burguret Water Project. All rights reserved.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

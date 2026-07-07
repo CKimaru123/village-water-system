@@ -1,0 +1,21 @@
+Burguret Water Project — Maintenance Notice
+============================================
+
+Hello <%= @user.display_name %>,
+
+⚠️ PLANNED SERVICE NOTICE
+
+<%= @title %>
+<%= '-' * @title.length %>
+
+<%= @message %>
+
+<% if @action_url.present? %>
+View details: <%= @action_url %>
+<% end %>
+
+For urgent issues during maintenance: support@village-water.com
+
+---
+© <%= Time.current.year %> Burguret Water Project
+Manage preferences: <%= @frontend_url %>/client/notifications

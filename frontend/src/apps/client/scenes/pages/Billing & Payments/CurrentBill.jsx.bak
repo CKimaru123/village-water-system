@@ -1,0 +1,355 @@
+import React, { useState, useEffect } from "react";
+import {
+  Box, Typography, Card, CardContent, Grid, Button, Chip,
+  Divider, List, ListItem, ListItemText, CircularProgress, Alert,
+  IconButton, Dialog, D,
+  FormControl, InputLabel, Select, MenuItem,
+} from "@mui/material";
+import { tokens } from "../../../theme";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import PaymentIcon from "@mui/icons-material/Payment";
+import WarningIcon from "@mui/icons-material/Warning";
+import CheckCircleIcon from "@mui/icons-materia";
+import SpeedIcon from "@mui/icons-mat/Speed";
+sors";
+import PersonIcon from "@muon";
+import DownloadIcon from "@mui/id";
+import PictureAsPdfIcon from "@muf";
+import CloseIcon from "@mui/icons-material/Clos";
+import LocalOfferIcon from "@mui/icons-materialr";
+import { useNavigate } from "react-router-dom";
+s/api";
+
+const CurrentBill = () => {
+  const colors = tokens("dark");
+  const navigate = useNavigate();
+  const [invoice, setInvoice] = useState);
+  const [true);
+ll);
+  const [downloadOpen, setDownloadOpen] = useState(false);
+  const [historyCount, setHistoryCount] = useState(5);
+e);
+
+  useEffect(() => {
+    // The client billing controller returns the enhanced invoiceth
+    // bilne_items
+    ll")
+ || null))
+      .catch(err => setEge))
+      .finally(() e));
+  }, []);
+
+  const fmt = (n) => `KES ${Number(n || 0).toLocaleString()}`;
+  const fmtDat;
+
+  const generatePDF = () => {
+    if (!invoice) return;
+    setGenerati);
+
+    
+<tr>
+        <td>${li.description}</td>
+/td>
+      </tr
+
+    const html = `<!DOCTYPE html><html><head><title>Water Bill ${invoice.invoice_number}</title>
+e>
+      body{font-famil
+      h1{color:#1a5276}table{width:100%;border-collapse:collapse;margi
+      th,td{border:1px solid #ccc;padding:8px;text-align:left}th{background:#eaf2ff}
+      .total{fon}
+    </st
+    <h1>Water Bill — ${invoice.invoice_number}</h1>
+>
+    <p><strong>Billing Mode:</stro"}</p>
+    <p><strong>Reading Sourc
+    <p><strong>Due Date:</strong> 
+    ${invoice.is_estimated ? '<p style="color:orange"><strong>"}
+    <h2>Meter Readings</h2>
+    <table><tr><th>Previous (m³)</th><th>Current (m³)</th><th>Consumpth></tr>
+    <tr><td>${invoice.meter_reading_previous ?? "—"}</td><td>${invoice
+    <h2>Charges</h2>
+    <table><tr><th>DHtml}
+    <tr class="total"><td>TOTAL DUE</td><td style="text-align:right">KE/table>
+    <p style="font-size:0.8em;color:#888">Generatep>
+    </body></html>`;
+
+    const blob = new Blob([html], { type: "text/" });
+    const url = URL.createOb);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Bill_${inl`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setGenerating(false);
+    setDownloadOpen(false);
+  };
+
+  if (loading) return (
+    <Box m="20px" display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+      <CircularP] }} />
+    </Box>
+  );
+
+  if (!invoice) return (
+    <Box m="20px">
+      <Typography varianty>
+      <Alert severity="success" icon={<Che}>
+        You have no outstanding bills. All payments are up to date.
+      </Alert>
+      <Button variant="outlined" sx={0] }}
+        onClick={() => na>
+        View Payment History
+      </Button>
+    </Box>
+  );
+
+  const isOverdue = invoic0;
+  const daysUntil
+
+ (
+    <Box m="20px">
+      {/* Header */}
+      <Box display="flex" justifyContent="space-between" alignx">
+        <Typography varia
+        <Button variant="outlined" startIcon={<DownloadIcon />}
+          sx={{ borderColor: colors.blueAccent[40] }}
+          onClick={() => set
+          Download PDF
+        </Button>
+      </Box>
+
+      {isOverdue && (
+        <Alert severity="error" icon={<WarningIcon />} sx={{ mb: 2 }}>
+          This invoice is <strong>{invoice.days_overdue} days overdue</strong>
+        </Alert>
+      )}
+      {invoice.is_estimated && (
+        <Alert severimb: 2 }}>
+          This is an <strong>estimated bill</strong> — no meter reading was period.
+        </Alert>
+      )}
+      {error && <Alert severity="warning" sx={{ mb: 2 }}>{error}</Alert>}
+
+      <Grid container spacing={3}>
+        {/* Left: Summary */}
+        <Grid item xs={12} md={5}>
+          <Card sx={{ backgroundColor: colors.primary[400] }}>
+            <CardContent>
+              <Box dmb={2}>
+                <ReceiptIcon sx={{ color: c/>
+                <Typography variant="h4" color={colors.grey[100]}>Invoice Summary</Typography>
+              </Box>
+
+              <Typograp}>
+                Invnumber}
+              </Typography>
+              <T5}>
+                Period: {iiod}
+              </Thy>
+>
+                Due: {fmtDate(invoice)}
+              </Typography>
+
+              {/* Due count
+              {!isOverdue && (
+                <Chip
+                  label={daysUntilDue === 0 ? "Due today" : `Due in ${daysUntilDue} day${daysUn
+                  size
+                  sx={{
+                    mb: 1,
+                    backgroundColor: daysUntilDue > 7 ? colors.greenAccent[700] : colors.redAcce,
+                    color: "#fff"
+                  }}
+                />
+              )}
+
+              {/* Billingge */}
+              <Box display="flex" al>
+                <LocalOfferIcon sx={{ fontSize: 16, color: colors.blueAccent[400] }} />
+                <Typography variant="body2" color={colors.grey[300]}>
+                  {invoic
+                </Typoghy>
+              </Box>
+
+             */}
+              <mb={2}>
+             r"
+          
+    >
+  
+
+                  {invoice.g"}
+ill;
+rrentBult Cudefa;
+
+export 
+  );
+}x>   </Bog>
+ lo </Dia>
+     alogActions    </Ditton>
+      </Bu        wnload"}
+ : "Do...""Generatingting ?      {genera       0] } }}>
+cent[60dAc.reolor: colorsoundCackgr b": {over], "&:hccent[500redAr: colors.roundColo{ backg  sx={
+          eratePDF}k={gennClic         ocon />}
+   wnloadIrtIcon={<Dostaenerating} {gdisabled=ontained" "con variant=tt  <Bu        utton>
+ncel</B>Ca }}.grey[400]lors cosx={{ color:alse)} nloadOpen(fow=> setD() ={tton onClick <Bu         
+tions>  <DialogAcnt>
+      nte </DialogCo      
+ aphy></Typogr/strong>_label}<ourceading_sice.restrong>{invoe: <sourcg in300]}>Read.grey[lors={cohy colorograpyp        <Tography>
+  /Typ</strong><e_label}_modice.billingg>{invoron mode: <st1}>Billingy[300]} mb={gre{colors.olor=graphy cypo      <Tphy>
+    g></Typogra)}</stronamountal_nvoice.totong>{fmt(itrdue: <s}>Amount 00]} mb={1ors.grey[3y color={col  <Typograph     phy>
+   ra     </Typog     period}
+ce.billing_invoing> — {ber}</stro.invoice_num>{invoice<strong    Invoice         
+mb={2}>00]} ey[3colors.gr color={ <Typography       t>
+  logConten   <Dia     ogTitle>
+    </Dialox>
+     </B  
+       nButton>Ico        </  Icon />
+       <Close     }}>
+    .grey[300] olor: colors sx={{ cse)}falnloadOpen(() => setDowck={on onClitt    <IconBu   /Box>
+            <aphy>
+     grTypo</llwnload Bi"h5">Dovariant=Typography    <  
+         />}} ] [400rs.redAccentor: colo={{ colon sxdfIcPictureAsP         <>
+     p={1}center" gaignItems="flex" al="display       <Box >
+     r"ms="cente" alignIte-betweennt="spaceConte" justifylexisplay="f  <Box d
+        ] }}>.grey[100or: colors={{ colle sxTitDialog
+        <}> } }mary[400]: colors.priroundColor sx: { backgrops={{aperP  Pidth
+      " fullWWidth="sm)} maxn(falsewnloadOpe{() => setDoonClose=loadOpen} ={downenog op     <Dial */}
+ ogialnload D* PDF Dow
+      {//Grid>
+      <  </Grid>
+      </Card>
+         
+ t>/CardConten         <
+   /Button>      <        istory →
+ing hw full readVie           ")}>
+     yistor-reading-hmeterte("../iga={() => navck      onCli       ] }}
+   ueAccent[400: colors.blcolor: 1, {{ mtmall" sx= size="s"text"riant=on va      <Butt      
+  rid>     </G
+         d>  </Gri     
+         y>aph</Typogr        
+          "}³` : "—on_m3} mptivoice.consumull ? `${inon_m3 != nonsumptivoice.c       {in        ">
+     boldntWeight="[400]} foccentgreenA{colors.y color=aph   <Typogr     
+          ypography>nsumption</T]}>Co.grey[400olor={colors"caption" cnt=y variaograph<Typ           4}>
+       ={ item xs  <Grid    
+          d>      </Gri  
+        aphy>ypogr  </T              —"}
+  t} m³` : "_currenr_readingmete${invoice. != null ? `currentter_reading_ce.me     {invoi         >
+      ht="bold"]} fontWeiggrey[100lors.olor={cography cTypo  <           
+     pography>Tyrent</[400]}>Currs.greycolor={coloion" iant="captpography var   <Ty      >
+         4} xs={temd i     <Gri           >
+/Grid          <phy>
+       </Typogra          }
+       m³` : "—"ious} ng_prev.meter_readiinvoice= null ? `${g_previous !adin.meter_reice{invo               ">
+     "boldight= fontWe[100]}ors.greyr={colcolopography Ty     <           aphy>
+  ypogrious</T]}>Prevy[400ors.gre={col colorcaption"variant="pography         <Ty        
+  ={4}>tem xs i      <Grid     {2}>
+     pacing=container srid          <Gox>
+             </B
+              }/>
+        l: 1 }} f", m"#ff, color: ccent[700]ueA colors.bllor:groundCoack{{ b     sx=            
+     con />}sonI icon={<Perze="small"Manual"} siabel || "ing_source_lce.readel={invoiab: <Chip l                  }} />
+, ml: 1 "#fff"], color: enAccent[700s.greolor: colorundCbackgro     sx={{              on />}
+    SensorsIc" icon={<mall="ssize"  Meterbel="Smart ? <Chip la          
+       rt_meter"e === "smarcreading_sounvoice.     {i      y>
+     graphTypoadings</}>Meter Re100]rey[lors.g" color={coiant="h5raphy var<Typog          
+      }} />] ccent[400rs.blueAlo co{ color: sx={<SpeedIcon                
+={2}>} mbgap={1center" " alignItems=ex""flx display=       <Bont>
+        <CardConte           2 }}>
+ ry[400], mt:colors.primar: lockgroundCobard sx={{   <Ca        dings */}
+ea/* Meter R    {      ard>
+
+  </C    
+    dContent>    </Car)}
+                   t>
+        </Aler           eason}
+.rbsidyice.su— {invo }</strong>                `
+  )} reductiontring(eSLocalto || 0).nty.amouce.subsid(invoi{Number   : `KES $            nt`
+     t}% discououncentage_discersidy.pinvoice.sub   ? `${            e"
+     percentagpe === "y_tyubsid.se.subsidyrong>{invoicied: <stppl  Subsidy a        
+        2 }}>{{ mt: ss" sx="succert severity=        <Ale      y && (
+  ice.subsidnvo         {i    nfo */}
+ sidy i Sub  {/*              )}
+
+         
+   Typography>ilable.</avaline items 400]}>No s.grey[{colorcolor=y graphypo          <T   (
+    :          )st>
+           </Li
+          </ListItem>         
+         raphy>pognt)}</Tyotal_amouice.tt(invo"bold">{fmght=Weint400]} focent[lors.greenAcor={coolTypography c  <                " }} />
+  : "boldtWeightony[100], f: colors.gre{{ colorops=raphyPrryTypogE" prima="TOTAL DUext primaryItemT   <List           
+      : 0 }}>{ px sx={istItem        <L
+           )}                Item>
+       </List         
+     Typography>}</x_amount)ce.tat(invoi0]}>{fmgrey[30ors.olor={colography c       <Typ         />
+       y[300] }}.gre: colorsolorps={{ cgraphyProimaryTypopr="Tax" imarytItemText pr        <Lis          0 }}>
+    { px: tItem sx={      <Lis         && (
+     amount > 0 invoice.tax_         {                )}
+       em>
+        </ListIt           y>
+     pographbtotal)}</Tysut(invoice.>{fm0]}grey[30lor={colors.phy copogra      <Ty            />
+    ] }} rs.grey[300colo{{ color: s=PropyTypography primartotal"="Sub primarytemTextstI       <Li             x: 0 }}>
+  x={{ pem s     <ListIt           (
+     ount &&amotal_oice.tl !== invbtotavoice.su{in                
+   1 }} />, my:.grey[700]r: colorsrderColosx={{ bo   <Divider           ))}
+                  >
+     Item</List                raphy>
+       </Typog                   nt)}
+li.amou}` : fmt(li.amount))(Math.abs(`−${fmtount < 0 ? .amli {                              >
+             al"}
+  rmold" : "nody" ? "bsi"sub === pei.item_ty{lt=  fontWeigh            
+          ey[100]}colors.gr400] : eenAccent[colors.gr" ? ubsidyype === "s_t{li.itemr=        colo               ypography
+       <T                  />
+                    ey[400] }}
+.grcolors{ color: phyProps={ypograyT   secondar               }
+      rey[100] }lors.g400] : coccent[eenAs.gr" ? colorsidy"sub e ===tem_typli.i color: s={{hyPropyTypograp    primar                }
+     undefineded" :ppliidy ay" ? "Subssubsidpe === "tyitem_   : li.               
+        t_rate}`uniES ${li. × Km³} ntity `${li.qua    ?                ty
+      ntiua" && li.qtionter_consumpype === "waitem_tary={li.      second                  iption}
+cry={li.desmar       pri                 t
+tItemTex        <Lis         
+      }}>x: 0 p={{m key={i} sx    <ListIte            => (
+    i) s.map((li, .line_iteminvoice  {               se>
+ ist den       <L
+          0 ? (length >ne_items?.e.lioic {inv         >
+    graphyTypoakdown</Bre}>Bill mb={2100]} ors.grey[r={col="h4" coloaphy variant   <Typogr     t>
+      ten<CardCon         0] }}>
+   y[40lors.primarndColor: co={{ backgroud sx<Car   /}
+       own *kd Bill Brea        {/*7}>
+   md={{12} xs=rid item
+        <Gdings */} Reater Meakdown +Bre* Right:       {/
+  id>
+</Gr      /Card>
+  
+          <>ardContent  </C   >
+       /Box   <          /Button>
+    <         
+    t Historyw Paymen       Vie           }>
+t-history")aymen"../pigate(nav=> nClick={()     o              }}
+00] s.grey[3olor: color sx={{ cant="text"ton vari     <But    
+          </Button>           t Plan
+  menPayp et U  S             >
+   oice } })}tate: { invplans", { st-"../paymengate(> naviick={() =      onCl            
+cent[400] }}lueAcs.blor cor:olo], borderC400nt[rs.blueAccer: colosx={{ colo              ed"
+    linant="outButton vari  <            utton>
+       </B     Now
+         Pay            
+    ice } })}>invote: { { sta", ente-paym../makte(" navigaClick={() =>          on
+        [700] } }}reenAccent.gor: colorsoundCol { backgr:hover":"&0], [60Accenteengr colors.lor:ndCooux={{ backgr s                 />}
+ymentIcon n={<Pad" startIcot="containe varian <Button     
+          " gap={1}>mnion="coluexDirectlex" fl="f{3} display    <Box mt=   
+       
+         /> }}
+     #fff"r: " colo],[500.blueAccentrs500] : coloent[rs.redAccdue ? colosOverndColor: i 1, backgrou={{ mt:        sx"
+        all  size="sm       )}
+       Case(?.toUpperstatusoice.: inverdue}d` _ovays${invoice.d ? `Overdue ={isOverdue       label          <Chip
+       
+      /Typography>         <     )}
+_amountice.totalinvo       {fmt(
+         ld">eight="botWfon0]} nt[40ccelors.greenA cot[400] :cenolors.redAc ? c{isOverdueolor=="h2" caphy variant <Typogr         
+    }} />
+700], mb: 2 grey[or: colors.orderColider sx={{ b   <Div
+           
+     </Box>
+         hy>  </Typograp              

@@ -1,0 +1,62 @@
+<%# Generic notification email template %>
+
+<!-- Priority badge -->
+<% if @priority == 'urgent' || @priority == 'high' %>
+<p style="margin:0 0 16px;padding:10px 16px;background-color:<%= @priority == 'urgent' ? '#fff3cd' : '#fff8e1' %>;border-left:4px solid <%= @priority == 'urgent' ? '#dc3545' : '#ffc107' %>;border-radius:4px;font-size:13px;color:#555;">
+  <strong><%= @priority == 'urgent' ? '🚨 Urgent' : '⚠️ High Priority' %></strong> — This notification requires your attention.
+</p>
+<% end %>
+
+<!-- Greeting -->
+<p style="margin:0 0 8px;font-size:16px;color:#333;">
+  Hello <strong><%= @user.display_name %></strong>,
+</p>
+
+<!-- Notification details -->
+<p style="margin:0 0 16px;font-size:14px;color:#555;">
+  <strong>Type:</strong> <%= @notification.notification_type.to_s.humanize %><br>
+  <strong>Sent:</strong> <%= @created_at.strftime('%B %d, %Y at %I:%M %p') %>
+</p>
+
+<!-- Title -->
+<h2 style="margin:0 0 16px;font-size:20px;color:#141b2d;font-weight:700;border-bottom:2px solid #4cceac;padding-bottom:10px;">
+  <%= @title %>
+</h2>
+
+<!-- Message body -->
+<div style="margin:0 0 24px;font-size:15px;color:#444;line-height:1.7;">
+  <%= simple_format(@message, {}, wrapper_tag: 'div', sanitize: false) %>
+</div>
+
+<% if @metadata.present? %>
+<div style="margin:0 0 24px;padding:16px;background-color:#f7f7f7;border-radius:8px;font-size:14px;color:#444;">
+  <strong>Details:</strong>
+  <ul style="margin:8px 0 0;padding-left:18px;">
+    <% @metadata.each do |key, value| %>
+      <li><strong><%= key.to_s.humanize %>:</strong> <%= value %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<!-- CTA button -->
+<% if @action_url.present? %>
+<p style="margin:0 0 24px;text-align:center;">
+  <a href="<%= @action_url %>"
+     style="display:inline-block;padding:12px 28px;background-color:#4cceac;color:#141b2d;text-decoration:none;border-radius:6px;font-weight:700;font-size:15px;">
+    View Details →
+  </a>
+</p>
+<% end %>
+
+<!-- Divider -->
+<hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
+
+<p style="margin:0;font-size:13px;color:#888;">
+  If you did not expect this notification or have questions, please contact us at
+  <a href="mailto:support@village-water.com" style="color:#4cceac;">support@village-water.com</a>.
+</p>
+
+<p style="margin:16px 0 0;font-size:13px;color:#888;">
+  Manage your notification preferences: <a href="<%= @frontend_url %>/client/notifications" style="color:#4cceac;">Notification Settings</a>
+</p>

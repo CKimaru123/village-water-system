@@ -1,0 +1,22 @@
+Burguret Water Project — Notification
+======================================
+
+Hello <%= @user.display_name %>,
+
+<%= @title %>
+<%= '-' * @title.length %>
+
+<%= @message %>
+
+<% if @action_url.present? %>
+View details: <%= @action_url %>
+<% end %>
+
+Category: <%= @category&.capitalize %>
+Date: <%= Time.current.strftime('%B %d, %Y at %I:%M %p') %>
+
+---
+To manage your notification preferences, visit:
+<%= @frontend_url %>/client/notifications
+
+© <%= Time.current.year %> Burguret Water Project
