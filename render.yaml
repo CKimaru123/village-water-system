@@ -1,0 +1,10 @@
+# render.yaml (place in repo root or backend/)
+services:
+  - type: web
+    name: village-water-backend
+    env: ruby
+    buildCommand: "bundle install && rails db:migrate"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: RAILS_ENV
+        value: production
