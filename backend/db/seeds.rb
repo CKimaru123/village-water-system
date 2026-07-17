@@ -230,7 +230,7 @@ if Contractor.count == 0
       name: "James Mwangi",
       company_name: "AquaDrill Ltd",
       specialization: "Borehole Drilling",
-      phone: "+254712345678",
+      phone: "+254703603230",
       email: "james@aquadrill.co.ke",
       status: "active",
       notes: "Certified borehole driller with 10+ years experience. NCA licensed. Completed 8 boreholes in the region."
@@ -239,7 +239,7 @@ if Contractor.count == 0
       name: "Fatuma Hassan",
       company_name: "SolarTech Kenya",
       specialization: "Solar Pumping Systems",
-      phone: "+254723456789",
+      phone: "+254703603230",
       email: "fatuma@solartech.co.ke",
       status: "active",
       notes: "ERC-licensed solar engineer. Specializes in off-grid solar water pumping systems. 5 installations completed."
@@ -248,7 +248,7 @@ if Contractor.count == 0
       name: "Peter Otieno",
       company_name: "PipeWorks Co.",
       specialization: "Pipeline Installation",
-      phone: "+254734567890",
+      phone: "+254703603230",
       email: "peter@pipeworks.co.ke",
       status: "active",
       notes: "Expert in HDPE and GI pipeline systems. NCA/2019/112. Over 15km of pipeline installed."
@@ -257,7 +257,7 @@ if Contractor.count == 0
       name: "Grace Wanjiku",
       company_name: "WaterPure Ltd",
       specialization: "Water Treatment",
-      phone: "+254745678901",
+      phone: "+254703603230",
       email: "grace@waterpure.co.ke",
       status: "active",
       notes: "WHO-certified water treatment specialist. NEMA licensed. Upgraded 3 treatment plants to WHO standards."
@@ -266,7 +266,7 @@ if Contractor.count == 0
       name: "David Kipchoge",
       company_name: "BuildRight Ltd",
       specialization: "Civil Construction",
-      phone: "+254756789012",
+      phone: "+254703603230",
       email: "david@buildright.co.ke",
       status: "active",
       notes: "Specializes in elevated storage tanks and civil works. NCA/2018/078. 4 storage tanks constructed."
