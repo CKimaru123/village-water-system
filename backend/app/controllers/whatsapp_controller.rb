@@ -108,7 +108,8 @@
 # backend/app/controllers/whatsapp_controller.rb
 class WhatsappController < ApplicationController
   # CRITICAL: Disables CSRF protection so Meta/WhatsApp can send POST requests
-  skip_before_action :verify_authenticity_token
+  # skip_before_action :verify_authenticity_token    Commented this line
+  # (API mode doesn't have this by default, so skipping it causes a crash)
 
   # -------------------------------------------------
   # 1️⃣ Single action to handle BOTH GET (verification) and POST (messages)
