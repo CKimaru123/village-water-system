@@ -1,7 +1,7 @@
 # app/controllers/whatsapp_controller.rb
 class WhatsappController < ApplicationController
-  protect_from_forgery with: :null_session   # <-- needed for POST from Meta
-  skip_before_action :verify_authenticity_token
+  # protect_from_forgery with: :null_session   # <-- needed for POST from Meta
+  # skip_before_action :verify_authenticity_token
 
   # -------------------------------------------------
   # 1️⃣  Verification handshake (GET)
