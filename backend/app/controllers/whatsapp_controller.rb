@@ -71,15 +71,14 @@ class WhatsappController < ApplicationController
     body      = msg.dig('text', 'body')         # only present for type == 'text'
     msg_id    = msg['id']
 
-    # OPTIONAL: store the inbound message in your DB
+    # ✅ CORRECT
     InboundMessage.create!(
-      client:        Client.find_by(phone: sender.delete('+')),   # strip leading '+'
+      client:        Client.find_by(phone: sender.delete('+')),
       wa_message_id: msg_id,
       body:          msg_type == 'text' ? msg['text']['body'] : nil,
-      direction:    'INBOUND',
-      received_at:  Time.now
-            # you can add more fields (e.g., message_type, status, etc.)
-    end
+      direction:     'INBOUND',
+      received_at:   Time.now
+    )  # <--- CHANGED TO ')'
 
     # OPTIONAL: auto‑reply logic (example – always reply with a canned text)
     if msg_type == 'text' && msg['text'].present?
