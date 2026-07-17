@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     namespace :v1 do
-      # get 'health', to: 'health#show' # Add this line
+      get 'health', to: 'health#show' # Add this line
       # Contact routes (public for create, protected for others)
       resources :contacts, only: [:create, :index, :show, :update, :destroy]
       
@@ -396,8 +396,7 @@ Rails.application.routes.draw do
 
       # WhatsApp Webhook Endpoint (RECEIVE ONLY - Meta will call this)
       get  '/webhooks/whatsapp', to: 'whatsapp#verify'   # For Facebook's verification handshake
-      post '/webhooks/whatsapp', to: 'whatsapp#receive'  # For actual inbound messages/status 
-      updates
+      post '/webhooks/whatsapp', to: 'whatsapp#receive'  # For actual inbound messages/status/updates
 
       # Community Tasks + Volunteer sign-ups
       resources :community_tasks, only: [:index, :show, :create, :update, :destroy] do
