@@ -8,38 +8,117 @@
 #   end
 
 # Create the first admin user if none exists
-if User.admin.count == 0
-  admin = User.create!(
-    account_type: 'household',
-    role: 'admin',
-    status: 'active',
-    first_name: 'System',
-    last_name: 'Administrator',
-    phone: '+254700000000',
-    email: 'admin@village-water-system.com',
-    password: 'AdminPassword123!',
-    password_confirmation: 'AdminPassword123!',
-    alt_phone: '+254700000001',
-    plot_number: 'ADMIN001',
-    household_size: 1,
-    village: 'System',
-    communication_preference: 'Email',
-    landmark: 'System Administration',
-    newsletter_subscription: false
-  )
+# if User.admin.count == 0
+#   admin = User.create!(
+#     account_type: 'household',
+#     role: 'admin',
+#     status: 'active',
+#     first_name: 'System',
+#     last_name: 'Administrator',
+#     phone: '+254700000000',
+#     email: 'admin@village-water-system.com',
+#     password: 'AdminPassword123!',
+#     password_confirmation: 'AdminPassword123!',
+#     alt_phone: '+254700000001',
+#     plot_number: 'ADMIN001',
+#     household_size: 1,
+#     village: 'System',
+#     communication_preference: 'Email',
+#     landmark: 'System Administration',
+#     newsletter_subscription: false
+#   )
   
-  puts "✅ Created first admin user:"
-  puts "   Email: #{admin.email}"
-  puts "   Phone: #{admin.phone}"
-  puts "   Password: AdminPassword123!"
-  puts "   Role: #{admin.role}"
-  puts ""
-  puts "⚠️  IMPORTANT: Change the admin password after first login!"
-else
-  puts "ℹ️  Admin users already exist. Skipping admin creation."
+#   puts "✅ Created first admin user:"
+#   puts "   Email: #{admin.email}"
+#   puts "   Phone: #{admin.phone}"
+#   puts "   Password: AdminPassword123!"
+#   puts "   Role: #{admin.role}"
+#   puts ""
+#   puts "⚠️  IMPORTANT: Change the admin password after first login!"
+# else
+#   puts "ℹ️  Admin users already exist. Skipping admin creation."
+# end
+
+puts "🌱 Starting database seeding..."
+
+# ---------------------------------------------------------
+# 1. SUPER ADMIN (The ultimate owner, can create admins)
+# ---------------------------------------------------------
+super_admin = User.find_or_create_by(email: 'kiragucollins@gmail.com') do |user|
+  user.account_type = 'household'
+  user.role = 'super_admin'
+  user.status = 'active'
+  user.first_name = 'Collins'
+  user.last_name = 'Kiragu'
+  user.phone = '+254704363704'
+  user.alt_phone = '+254704363704'
+  user.password = 'Coll!ns123'
+  user.password_confirmation = 'Coll!ns123'
+  user.plot_number = 'SUPER001'
+  user.village = 'Headquarters'
+  user.communication_preference = 'Email'
+  user.newsletter_subscription = false
 end
 
-puts "🌱 Seeding completed!"
+if super_admin.persisted?
+  puts "✅ Super Admin ready: #{super_admin.email} | Password: Coll!ns123"
+else
+  puts "❌ Super Admin failed: #{super_admin.errors.full_messages.join(', ')}"
+end
+
+# ---------------------------------------------------------
+# 2. STANDARD ADMIN (Daily operations, cannot create other admins)
+# ---------------------------------------------------------
+admin = User.find_or_create_by(email: 'kimarupatriciah@gmail.com') do |user|
+  user.account_type = 'household'
+  user.role = 'admin'
+  user.status = 'active'
+  user.first_name = 'Patriciah'
+  user.last_name = 'Njeri'
+  user.phone = '+254729552789'
+  user.alt_phone = '+254704363704'
+  user.password = 'Coll!ns123'
+  user.password_confirmation = 'Coll!ns123'
+  user.plot_number = 'ADMIN001'
+  user.village = 'Burguret'
+  user.communication_preference = 'Email'
+  user.newsletter_subscription = false
+end
+
+if admin.persisted?
+  puts "✅ Admin ready: #{admin.email} | Password: Coll!ns123"
+else
+  puts "❌ Admin failed: #{admin.errors.full_messages.join(', ')}"
+end
+
+# ---------------------------------------------------------
+# 3. SAMPLE CLIENT (For testing the regular user experience)
+# ---------------------------------------------------------
+client = User.find_or_create_by(email: 'kimaruwvictoria@gmail.com') do |user|
+  user.account_type = 'household'
+  user.role = 'client'
+  user.status = 'active'
+  user.first_name = 'Victoria'
+  user.last_name = 'Wanjiku'
+  user.phone = '+254758868629'
+  user.alt_phone = '+254704363704'
+  user.password = 'Coll!ns123'
+  user.password_confirmation = 'Coll!ns123'
+  user.plot_number = 'PLOT-004'
+  user.household_size = 4
+  user.village = 'Burguret'
+  user.communication_preference = 'SMS'
+  user.landmark = 'Near the main junction'
+  user.newsletter_subscription = true
+end
+
+if client.persisted?
+  puts "✅ Sample Client ready: #{client.email} | Password: Coll!ns123"
+else
+  puts "❌ Client failed: #{client.errors.full_messages.join(', ')}"
+end
+
+puts "🌱 Seeding admin, super admin and clientcompleted!"
 
 # ── Seed community polls ──────────────────────────────────────────────────────
 admin_user = User.find_by(role: ['admin', 'super_admin'])
@@ -327,18 +406,3 @@ end
 load Rails.root.join('db/seeds_billing.rb')
 
 
-# # ── Content seed data ─────────────────────────────────────────────────────
-# load Rails.root.join('db/seeds_content.rb')
-
-
-# # -- Kiragu seed data ─────────────────────────────
-# load Rails.root.join('db/seeds_kiragu.rb') 
-
-# # -- MarketPlace seed data ─────────────────────────────
-# load Rails.root.join('db/seeds_marketplace.rb') 
-
-# # -- Phase1 seed data ─────────────────────────────
-# load Rails.root.join('db/seeds_phase1.rb') 
-
-# # -- Test Client seed data ─────────────────────────────
-# load Rails.root.join('db/seeds_test_client.rb') 
