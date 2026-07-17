@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     namespace :v1 do
-      get 'health', to: 'health#show' # Add this line
+      # get 'health', to: 'health#show' # Add this line
       # Contact routes (public for create, protected for others)
       resources :contacts, only: [:create, :index, :show, :update, :destroy]
       
