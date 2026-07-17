@@ -103,10 +103,10 @@ class NotificationDispatcher
   end
 
   def dispatch_whatsapp(pref_key)
-    return unless WhatsappService.configured?
+    return unless WhatsAppService.configured?
 
     Rails.logger.info "[NotificationDispatcher] Sending WhatsApp to #{@user.phone} (#{pref_key})"
-    WhatsappService.send_message(
+    WhatsAppService.send_message(
       to: @user.phone, # make sure this is stored **without** the leading '+'
       body: whatsapp_body #"Hello from the Village Water System – test message!"
     )
