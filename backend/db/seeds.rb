@@ -58,6 +58,7 @@ super_admin = User.find_or_create_by(email: 'kiragucollins@gmail.com') do |user|
   user.household_size = 1
   user.village = 'Headquarters'
   user.communication_preference = 'Email'
+  user.landmark = 'Near the shopping center'
   user.newsletter_subscription = false
 end
 
@@ -84,6 +85,7 @@ admin = User.find_or_create_by(email: 'kimarupatriciah@gmail.com') do |user|
   user.household_size = 1
   user.village = 'Burguret'
   user.communication_preference = 'Email'
+  user.landmark = 'Near school'
   user.newsletter_subscription = false
 end
 
@@ -121,6 +123,16 @@ else
 end
 
 puts "🌱 Seeding admin, super admin and clientcompleted!"
+
+puts "\n📦 Loading modular seed files..."
+
+# ✅ THE BEST PRACTICE: Use Rails.root.join for absolute, bulletproof paths
+# This works perfectly whether you run it locally or on Render!
+load Rails.root.join('db', 'seeds_marketplace.rb')
+load Rails.root.join('db', 'seeds_connection_billing.rb')
+
+puts "🎉 seeded market place and connection billing"
+
 
 # ── Seed community polls ──────────────────────────────────────────────────────
 admin_user = User.find_by(role: ['admin', 'super_admin'])
