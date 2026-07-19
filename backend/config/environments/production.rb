@@ -90,4 +90,11 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+   
+  # Allow WebSocket connections from local development and any deployed Render frontend
+  config.action_cable.allowed_request_origins = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    /https:\/\/.*\.onrender\.com/ # Allows any deployed Render frontend
+  ]
 end
