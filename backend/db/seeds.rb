@@ -128,11 +128,11 @@ puts "\n📦 Loading modular seed files..."
 
 # ✅ THE BEST PRACTICE: Use Rails.root.join for absolute, bulletproof paths
 # This works perfectly whether you run it locally or on Render!
-# load Rails.root.join('db', 'seeds_marketplace.rb')
-# load Rails.root.join('db', 'seeds_connection_billing.rb')
+load Rails.root.join('db', 'seeds_marketplace.rb')
+load Rails.root.join('db', 'seeds_connection_billing.rb')
 
-load 'backend/db/seeds_marketplace.rb' 
-load 'backend/db/seeds_connection_billing.rb' 
+# load 'backend/db/seeds_marketplace.rb' 
+# load 'backend/db/seeds_connection_billing.rb' 
 
 puts "🎉 seeded market place and connection billing"
 
