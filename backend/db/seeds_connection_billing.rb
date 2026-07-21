@@ -29,7 +29,8 @@ if client.persisted?
   if connection.nil?
     connection = client.connections.create!(
       connection_date:    6.months.ago.to_date,
-      connection_type:    'new',
+    #   connection_type:    'new',
+      connection_type:    'domestic', # ✅ CORRECT (matches model validation)
       service_line_size:  '15mm',
       zone:               'Zone A - Nairobi North',
       meter_type:         'smart_digital',
