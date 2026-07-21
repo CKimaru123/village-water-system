@@ -4,7 +4,8 @@ class Api::V1::Admin::DunningController < ApplicationController
 
   # GET /api/v1/admin/dunning/overdue
   def overdue
-    invoices = Invoice.overdue.includes(:user, :dunning_actions).order(due_date: :asc)
+    # invoices = Invoice.overdue.includes(:user, :dunning_actions).order(due_date: :asc)
+    invoices = Invoice.overdue.includes(:user, :dunning_action).order(due_date: :asc)
     render_success({
       overdue_invoices: invoices.map { |i|
         { id: i.id, invoice_number: i.invoice_number, user: { id: i.user.id, name: i.user.display_name, phone: i.user.phone },

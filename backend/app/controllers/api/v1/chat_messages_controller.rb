@@ -25,7 +25,9 @@ class Api::V1::ChatMessagesController < ApplicationController
 
     # Get distinct session_ids with latest message and unread count
     rows = ChatMessage
-             .select("session_id, MAX(created_at) as last_message_at, COUNT(*) as message_count, SUM(CASE WHEN read = 0 OR read = false THEN 1 ELSE 0 END) as unread_count")
+            #  .select("session_id, MAX(created_at) as last_message_at, COUNT(*) as message_count, SUM(CASE WHEN read = 0 OR read = false THEN 1 ELSE 0 END) as unread_count")
+            # ✅ CORRECT for PostgreSQL (safely handles false and null)
+                .select("session_id, MAX(created_at) as last_message_at, COUNT(*) as message_count, SUM(CASE WHEN read IS NOT TRUE THEN 1 ELSE 0 END) as unread_count")
              .group(:session_id)
              .order("last_message_at DESC")
 
