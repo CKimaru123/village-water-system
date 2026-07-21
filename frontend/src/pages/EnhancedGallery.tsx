@@ -188,9 +188,10 @@ export const EnhancedGallery: React.FC<EnhancedGalleryProps> = ({ data }) => {
 
   // Load gallery items from database
   const loadGalleryItems = async () => {
+    const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3001/api/v1/gallery_items');
+      const response = await fetch(`${BASE_URL}/gallery_items`);
       const result = await response.json();
       
       if (result.success) {
@@ -287,8 +288,8 @@ export const EnhancedGallery: React.FC<EnhancedGalleryProps> = ({ data }) => {
         // Convert Unsplash URLs to direct image URLs
         imageUrl = convertToDirectImageUrl(imageUrl);
       }
-
-      const response = await fetch('http://localhost:3001/api/v1/gallery_items', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/gallery_items`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -360,7 +361,8 @@ export const EnhancedGallery: React.FC<EnhancedGalleryProps> = ({ data }) => {
 
     try {
       const token = user?.token || localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3001/api/v1/gallery_items/${editingItem.id}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/gallery_items/${editingItem.id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -408,10 +410,11 @@ export const EnhancedGallery: React.FC<EnhancedGalleryProps> = ({ data }) => {
   };
 
   const handleDelete = async (item: EnhancedGalleryItem) => {
+    const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
     if (window.confirm(`Are you sure you want to delete "${item.title}"?`)) {
       try {
         const token = user?.token || localStorage.getItem('token');
-        const response = await fetch(`http://localhost:3001/api/v1/gallery_items/${item.id}`, {
+        const response = await fetch(`${BASE_URL}/gallery_items/${item.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,

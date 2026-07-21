@@ -37,7 +37,8 @@ const ConnectionDetails = () => {
     const fetchConnectionDetails = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3001/api/v1/connections/me', {
+        const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+        const response = await fetch(`${BASE_URL}/connections/me`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

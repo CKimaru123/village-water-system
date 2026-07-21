@@ -71,8 +71,8 @@ const ProfileHistory = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      
-      const url = `http://localhost:3001/api/v1/client/profile/audit_trail`;
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const url = `${BASE_URL}/client/profile/audit_trail`;
       console.log('Fetching audit trail from:', url);
       
       const response = await fetch(url, {

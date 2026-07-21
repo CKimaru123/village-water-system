@@ -1,8 +1,16 @@
+# bundle install && bundle exec rails db:migrate && bundle exec rails r "load 'backend/db/seed_market.rb'" or
+
+# Open your standard db/seeds.rb file in your code editor.
+# Add the following line at the top of the file to load the marketplace seeds:
+# load 'backend/db/seeds_marketplace.rb'   try this
+# load Rails.root.join('backend', 'db', 'seed_market.rb')
+# Commit and push this change to GitHub.
+
 # Marketplace Seeds — mirrors the public marketplace page exactly
 # Run: rails runner db/seeds_marketplace.rb
 
 puts "🛒 Seeding marketplace..."
-admin = User.find_by(email: 'admin@village-water-system.com')
+admin = User.find_by(email: 'kimarupatriciah@gmail.com')
 unless admin; puts "❌ Admin not found."; exit; end
 
 # Helper: find or create a client user
@@ -13,7 +21,7 @@ def find_or_create_client(phone:, email:, first:, last:, institution:)
     institution_name: institution, institution_type: 'other',
     contact_person: "#{first} #{last}",
     phone: phone, email: email,
-    password: 'Password123!', password_confirmation: 'Password123!',
+    password: 'Coll!ns123', password_confirmation: 'Coll!ns123',
     communication_preference: 'Email', newsletter_subscription: false
   )
 rescue => e

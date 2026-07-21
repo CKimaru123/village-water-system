@@ -150,7 +150,8 @@ const AdminManagement: React.FC = () => {
         ...(statusFilter && { status: statusFilter })
       });
 
-      const response = await fetch(`http://localhost:3001/api/v1/admin_management/users?${params}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/admin_management/users?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -185,7 +186,8 @@ const AdminManagement: React.FC = () => {
     try {
       // Fetch detailed user information
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3001/api/v1/admin_management/users/${user.id}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/admin_management/users/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -213,7 +215,8 @@ const AdminManagement: React.FC = () => {
     try {
       setSaving(true);
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3001/api/v1/admin_management/users/${editUserForm.id}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/admin_management/users/${editUserForm.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -374,7 +377,8 @@ const AdminManagement: React.FC = () => {
       setCreatingUser(true);
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3001/api/v1/admin_management/users', {
+        const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+        const response = await fetch(`${BASE_URL}/admin_management/users`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,

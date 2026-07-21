@@ -386,7 +386,7 @@ const MarketPlace: React.FC = () => {
 
   // Fetch all marketplace items from backend on mount
   useEffect(() => {
-    const BASE_URL = 'http://localhost:3001/api/v1';
+    const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
     Promise.all([
       fetch(`${BASE_URL}/marketplace_items`).then(r => r.json()),
       fetch(`${BASE_URL}/marketplace_items?featured=true`).then(r => r.json()),

@@ -202,7 +202,8 @@ export const Gallery: React.FC<GalleryProps> = ({ data: propData }) => {
   const loadGalleryItems = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://127.0.0.1:3001/api/v1/gallery_items');
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/gallery_items`);
       const data = await response.json();
       
       if (data.success) {
@@ -246,7 +247,8 @@ export const Gallery: React.FC<GalleryProps> = ({ data: propData }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://127.0.0.1:3001/api/v1/gallery_items/${item.id}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/gallery_items/${item.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

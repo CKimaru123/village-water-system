@@ -345,7 +345,8 @@ export const Contact: React.FC<ContactProps> = ({ data }) => {
     setErrors({});
 
     try {
-      const response = await fetch('http://127.0.0.1:3001/api/v1/contacts', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/contacts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

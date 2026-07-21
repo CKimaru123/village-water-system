@@ -214,11 +214,12 @@ const EditProfile = () => {
   // Fetch user profile data
   const fetchUserProfile = async () => {
     if (!user) return;
+    const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
     
     setLoading(true);
     try {
       const token = user.token || localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/auth/me', {
+      const response = await fetch(`${BASE_URL}/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -308,7 +309,8 @@ const EditProfile = () => {
     setLoading(true);
     try {
       const token = user.token || localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/auth/me', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/auth/me`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -396,7 +396,7 @@ Rails.application.routes.draw do
 
       # WhatsApp Webhook Endpoint (RECEIVE ONLY - Meta will call this)
       get  '/webhooks/whatsapp', to: 'whatsapp#verify'   # For Facebook's verification handshake
-      post '/webhooks/whatsapp', to: 'whatsapp#receive'  # For actual inbound messages/status/updates
+      post '/webhooks/whatsapp', to: 'whatsapp#receive'  # For actual inbound messages/status
 
       # Community Tasks + Volunteer sign-ups
       resources :community_tasks, only: [:index, :show, :create, :update, :destroy] do

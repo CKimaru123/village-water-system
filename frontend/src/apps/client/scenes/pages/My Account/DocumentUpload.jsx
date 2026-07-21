@@ -90,8 +90,8 @@ const DocumentUpload = () => {
       console.log('=== FETCH DOCUMENTS START ===');
       console.log('Token exists:', token ? 'YES' : 'NO');
       console.log('Token value:', token ? token.substring(0, 20) + '...' : 'null');
-      
-      const response = await fetch('http://localhost:3001/api/v1/documents/me', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/documents/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -171,8 +171,8 @@ const DocumentUpload = () => {
         
         console.log(`Uploading file ${i + 1}/${selectedFiles.length}:`, fileData.name);
         console.log('Document type:', documentTypes[fileData.id] || fileData.detectedType);
-        
-        const response = await fetch('http://localhost:3001/api/v1/documents', {
+        const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+        const response = await fetch(`${BASE_URL}/documents`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -243,7 +243,8 @@ const DocumentUpload = () => {
   const handleDownloadDocument = async (document) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3001/api/v1/documents/${document.id}/download`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/documents/${document.id}/download`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -276,7 +277,8 @@ const DocumentUpload = () => {
     
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3001/api/v1/documents/${document.id}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/documents/${document.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

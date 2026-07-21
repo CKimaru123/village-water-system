@@ -24,8 +24,8 @@ def test_signup_api
       newsletter_subscription: true
     }
   }
-
-  uri = URI('http://127.0.0.1:3001/api/v1/auth/signup')
+  const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+  uri = URI("#{BASE_URL}/auth/signup")
   http = Net::HTTP.new(uri.host, uri.port)
   
   request = Net::HTTP::Post.new(uri)

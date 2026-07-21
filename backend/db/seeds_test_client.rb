@@ -186,7 +186,7 @@ puts "📊 TEST CLIENT READY"
 puts "="*60
 puts "  Name:       #{client.display_name}"
 puts "  Email:      #{client.email}"
-puts "  Password:   Password123!"
+puts "  Password:   Collins!123"
 puts "  Role:       #{client.role}"
 puts "  Connection: #{connection.connection_number}"
 puts "  Readings:   #{connection.meter_readings.count}"

@@ -17,7 +17,8 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import CloseIcon from "@mui/icons-material/Close";
 import api from "../../../utils/api";
 
-const BASE_WS = "ws://localhost:3001/cable";
+// const BASE_WS = "ws://localhost:3001/cable";
+const BASE_WS = process.env.REACT_APP_CABLE_URL || 'ws://localhost:3001/cable';
 const MAX_RETRIES = 5;
 const RETRY_BASE_MS = 2000;
 

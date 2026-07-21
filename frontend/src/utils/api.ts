@@ -1,8 +1,14 @@
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+// TEMPORARY: Hardcoded to force connection to deployed backend
+const BASE_URL = 'https://village-water-system-backend.onrender.com/api/v1';
+
+// const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+
+//REACT_APP_API_URL=https://village-water-system-backend.onrender.com/api/v1
 
 export const getAuthToken = (): string | null => {
   return localStorage.getItem('token');
 };
+
 
 export const setAuthToken = (token: string): void => {
   localStorage.setItem('token', token);

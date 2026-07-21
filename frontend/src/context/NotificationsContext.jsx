@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
 
-const BASE = "http://localhost:3001/api/v1";
-
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
 const NotificationsContext = createContext(undefined);
 
 // ── Quiet hours check ─────────────────────────────────────────────────────────
@@ -68,7 +67,7 @@ export const NotificationsProvider = ({ children }) => {
     try {
       console.debug("[NotificationsContext] Fetching notifications for user", user.id);
       setLoading(true);
-      const res = await fetch(`${BASE}/notifications`, { headers: headers() });
+      const res = await fetch(`${BASE_URL}/notifications`, { headers: headers() });
       if (res.ok) {
         const data = await res.json();
         console.debug("[NotificationsContext] fetchNotifications response", data);
@@ -87,7 +86,7 @@ export const NotificationsProvider = ({ children }) => {
   // ── Mark single as read ───────────────────────────────────────────────────
   const markAsRead = useCallback(async (id) => {
     try {
-      const res = await fetch(`${BASE}/notifications/${id}/mark_read`, {
+      const res = await fetch(`${BASE_URL}/notifications/${id}/mark_read`, {
         method: "PATCH", headers: headers(),
       });
       if (res.ok) {
@@ -103,7 +102,7 @@ export const NotificationsProvider = ({ children }) => {
   // ── Mark all as read ──────────────────────────────────────────────────────
   const markAllAsRead = useCallback(async () => {
     try {
-      const res = await fetch(`${BASE}/notifications/mark_all_read`, {
+      const res = await fetch(`${BASE_URL}/notifications/mark_all_read`, {
         method: "PATCH", headers: headers(),
       });
       if (res.ok) {
@@ -116,7 +115,7 @@ export const NotificationsProvider = ({ children }) => {
   // ── Delete notification ───────────────────────────────────────────────────
   const deleteNotification = useCallback(async (id) => {
     try {
-      const res = await fetch(`${BASE}/notifications/${id}`, {
+      const res = await fetch(`${BASE_URL}/notifications/${id}`, {
         method: "DELETE", headers: headers(),
       });
       if (res.ok) {
@@ -146,7 +145,7 @@ export const NotificationsProvider = ({ children }) => {
     if (!user) return;
     try {
       setPrefsLoading(true);
-      const res = await fetch(`${BASE}/client/notification_preferences`, { headers: headers() });
+      const res = await fetch(`${BASE_URL}/client/notification_preferences`, { headers: headers() });
       if (res.ok) {
         const data = await res.json();
         const loaded = data.data?.preferences || data.preferences || {};
@@ -159,7 +158,7 @@ export const NotificationsProvider = ({ children }) => {
 
   // ── Save preferences ──────────────────────────────────────────────────────
   const savePreferences = useCallback(async (prefs) => {
-    const res = await fetch(`${BASE}/client/notification_preferences`, {
+    const res = await fetch(`${BASE_URL}/client/notification_preferences`, {
       method: "PATCH", headers: headers(),
       body: JSON.stringify({ preferences: prefs }),
     });
@@ -175,7 +174,13 @@ export const NotificationsProvider = ({ children }) => {
     if (!token) return;
 
     import("@rails/actioncable").then(({ createConsumer }) => {
-      const cable = createConsumer(`ws://localhost:3001/cable?token=${token}`);
+      // 1. Define the base URL (falls back to your deployed Render URL if .env is missing)
+      const cableBaseUrl = process.env.REACT_APP_CABLE_URL || 'wss://village-water-system-backend.onrender.com/cable';
+
+      // 2. Create the consumer, appending the token for authentication
+      const cable = createConsumer(`${cableBaseUrl}?token=${token}`);
+
+      // 3. Keep your existing ref assignment exactly as it was
       cableRef.current = cable;
 
       const sub = cable.subscriptions.create(

@@ -43,7 +43,7 @@ const KB_CATEGORIES = [
   { id: "water_quality", name: "Water Quality", color: "#34d399" },
 ];
 
-const BASE_URL = "http://localhost:3001/api/v1";
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
 
 const getCatInfo = (catId, isBlog) => {
   const list = isBlog ? BLOG_CATEGORIES : KB_CATEGORIES;

@@ -34,10 +34,11 @@ import PeopleIcon from "@mui/icons-material/People";
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import ParkIcon from "@mui/icons-material/Park";
 
-const BASE_URL = "http://localhost:3001/api/v1";
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
 const CARBON_FACTOR = 0.298; // kg CO2 per m3 pumped water
 const TREE_ABSORPTION = 21;  // kg CO2 per tree per year
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 const authHeaders = () => {
   const token = localStorage.getItem("token");
   return { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) };
@@ -1520,7 +1521,7 @@ const CarbonFootprintCalculator = () => {
                             <Box display="flex" gap={0.5} mt={1} flexWrap="wrap">
                               {tr.photos.slice(0, 3).map(p => (
                                 <img key={p.id}
-                                  src={`http://localhost:3001${p.url}`}
+                                  src={`${BACKEND_URL}${p.url}`}
                                   alt={p.caption || "tree"}
                                   style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 4,
                                     border: `1px solid ${colors.grey[600]}` }}

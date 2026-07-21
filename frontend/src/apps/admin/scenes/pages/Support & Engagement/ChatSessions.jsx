@@ -10,7 +10,8 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import ChatIcon from "@mui/icons-material/Chat";
 import adminApi from "../../../utils/api";
 
-const BASE_WS = "ws://localhost:3001/cable";
+// const BASE_WS = "ws://localhost:3001/cable";
+const BASE_WS = process.env.REACT_APP_CABLE_URL || 'wss://village-water-system-backend.onrender.com/cable';
 
 const ChatSessions = () => {
   const colors = tokens("dark");

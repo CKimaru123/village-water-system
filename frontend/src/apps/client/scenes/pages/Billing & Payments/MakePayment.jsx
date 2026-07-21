@@ -74,7 +74,9 @@ const MakePayment = () => {
     const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
     if (!token) return;
     try {
-      const ws = new WebSocket(`ws://localhost:3001/cable?token=${token}`);
+      // const ws = new WebSocket(`ws://localhost:3001/cable?token=${token}`);
+      const cableBaseUrl = process.env.REACT_APP_CABLE_URL || 'ws://localhost:3001/cable';
+      const ws = new WebSocket(`${cableBaseUrl}?token=${token}`);
       wsRef.current = ws;
       ws.onopen = () => {
         ws.send(JSON.stringify({ command: "subscribe", identifier: JSON.stringify({ channel: "MeterReadingsChannel" }) }));

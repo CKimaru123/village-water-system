@@ -26,7 +26,7 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import SearchIcon from "@mui/icons-material/Search";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 
-const BASE_URL = "http://localhost:3001/api/v1";
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
 const PRIORITIES = ["low", "medium", "high", "urgent"];
 const STATUSES   = ["pending", "in_progress", "completed", "blocked"];
 const SUB_STATUSES = ["pending", "in_progress", "completed"];

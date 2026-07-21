@@ -30,7 +30,9 @@ const useRealTimeUpdates = (onProfileUpdate, onAuditLogUpdate, clientId = null, 
       console.log('ActionCable loaded, creating consumer...');
       
       // Create WebSocket connection with authentication
-      const wsUrl = `ws://localhost:3001/cable?token=${token}`;
+      // const wsUrl = `ws://localhost:3001/cable?token=${token}`;
+      const cableBaseUrl = process.env.REACT_APP_CABLE_URL || 'wss://village-water-system-backend.onrender.com/cable';
+      const wsUrl = `${cableBaseUrl}?token=${token}`; 
       console.log('WebSocket URL:', wsUrl);
       
       const cable = createConsumer(wsUrl);

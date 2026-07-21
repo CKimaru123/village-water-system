@@ -79,8 +79,8 @@ const RequestQueue = () => {
         ...(statusFilter && { status: statusFilter }),
         ...(typeFilter && { request_type: typeFilter })
       });
-
-      const response = await fetch(`http://localhost:3001/api/v1/admin/requests?${params}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/admin/requests?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -106,7 +106,8 @@ const RequestQueue = () => {
   const loadAppeals = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/admin/appeals', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/admin/appeals`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -134,9 +135,9 @@ const RequestQueue = () => {
     try {
       setProcessing(true);
       const token = localStorage.getItem('token');
-      
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       const endpoint = action === 'approve' ? 'approve' : 'deny';
-      const response = await fetch(`http://localhost:3001/api/v1/admin/requests/${selectedRequest.id}/${endpoint}`, {
+      const response = await fetch(`${BASE_URL}/admin/requests/${selectedRequest.id}/${endpoint}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

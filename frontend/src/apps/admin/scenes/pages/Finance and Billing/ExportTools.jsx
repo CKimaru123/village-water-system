@@ -6,7 +6,7 @@ import {
 import { tokens } from "../../../theme";
 import DownloadIcon from "@mui/icons-material/Download";
 
-const BASE_URL = "http://localhost:3001/api/v1";
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
 
 const EXPORT_TYPES = [
   { value: "clients", label: "Client Data" },

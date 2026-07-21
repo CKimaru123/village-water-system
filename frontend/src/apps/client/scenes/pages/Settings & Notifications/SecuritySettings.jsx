@@ -330,7 +330,8 @@ const SecuritySettings = () => {
       }
 
       console.log('Fetching user data from backend...');
-      const response = await fetch('http://127.0.0.1:3001/api/v1/auth/me', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/auth/me`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -676,7 +677,8 @@ const SecuritySettings = () => {
       }
       
       // Call backend API to change password
-      const response = await fetch('http://127.0.0.1:3001/api/v1/auth/change_password', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/auth/change_password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

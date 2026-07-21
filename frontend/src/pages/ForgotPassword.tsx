@@ -24,12 +24,14 @@ const ForgotPassword: React.FC = () => {
     setLoading(true);
     setMessage(null);
 
+    const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+
     try {
       // Determine if it's email or phone
       const isEmail = identifier.includes("@");
       const body = isEmail ? { email: identifier } : { phone: identifier };
 
-      const response = await fetch("http://localhost:3001/api/v1/auth/forgot-password", {
+      const response = await fetch(`${BASE_URL}/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

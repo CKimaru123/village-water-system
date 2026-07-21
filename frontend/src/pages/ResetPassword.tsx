@@ -42,8 +42,10 @@ const ResetPassword: React.FC = () => {
     setLoading(true);
     setMessage(null);
 
+    const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+
     try {
-      const response = await fetch("http://localhost:3001/api/v1/auth/reset-password", {
+      const response = await fetch(`${BASE_URL}/auth/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, password, password_confirmation: passwordConfirmation }),

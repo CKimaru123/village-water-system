@@ -78,8 +78,8 @@ const useNotifications = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      
-      const response = await fetch('http://localhost:3001/api/v1/notifications', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/notifications`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -106,8 +106,8 @@ const useNotifications = () => {
 
     try {
       const token = localStorage.getItem('token');
-      
-      const response = await fetch('http://localhost:3001/api/v1/notifications/unread_count', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/notifications/unread_count`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -131,8 +131,8 @@ const useNotifications = () => {
 
     try {
       const token = localStorage.getItem('token');
-      
-      const response = await fetch(`http://localhost:3001/api/v1/notifications/${notificationId}/mark_read`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/notifications/${notificationId}/mark_read`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -165,8 +165,8 @@ const useNotifications = () => {
 
     try {
       const token = localStorage.getItem('token');
-      
-      const response = await fetch('http://localhost:3001/api/v1/notifications/mark_all_read', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/notifications/mark_all_read`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -199,8 +199,8 @@ const useNotifications = () => {
 
     try {
       const token = localStorage.getItem('token');
-      
-      const response = await fetch(`http://localhost:3001/api/v1/notifications/${notificationId}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/notifications/${notificationId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

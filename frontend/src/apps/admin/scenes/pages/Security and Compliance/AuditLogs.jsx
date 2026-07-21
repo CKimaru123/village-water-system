@@ -75,10 +75,10 @@ const AuditLogs = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       // For now, we'll load audit logs for all clients
       // In a real implementation, you'd have a dedicated endpoint for admin audit logs
-      const response = await fetch(`http://localhost:3001/api/v1/admin_management/users`, {
+      const response = await fetch(`${BASE_URL}/admin_management/users`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -358,7 +358,7 @@ const AuditLogs = () => {
           <Card sx={{ backgroundColor: colors.primary[400] }}>
             <CardContent>
               <Box display="flex" alignItems="center" gap={2}>
-                <CheckCircle sx={{ fontSize: 40, color={colors.blueAccent[500] }} />
+                <CheckCircle sx={{ fontSize: 40, color: colors.blueAccent[500] }} />
                 <Box>
                   <Typography variant="h4" color={colors.grey[100]} fontWeight="bold">
                     {filteredLogs.filter(log => {

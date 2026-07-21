@@ -168,6 +168,8 @@ const ProfileInformation = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!user) return;
+
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       
       console.log('=== PROFILE INFORMATION DEBUG ===');
       console.log('User from AuthContext:', user);
@@ -176,7 +178,7 @@ const ProfileInformation = () => {
       setLoading(true);
       try {
         const token = user.token || localStorage.getItem('token');
-        const response = await fetch('http://localhost:3001/api/v1/auth/me', {
+        const response = await fetch(`${BASE_URL}/auth/me`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -236,6 +238,9 @@ const ProfileInformation = () => {
     setLoading(true);
     try {
       const token = user.token || localStorage.getItem('token');
+
+         // ✅ DYNAMICALLY READ THE URL FROM YOUR .ENV FILE
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       
       const avatarToSave = profileImage || editedProfile.avatar;
       console.log('=== CLIENT SAVE AVATAR DEBUG ===');
@@ -244,7 +249,7 @@ const ProfileInformation = () => {
       console.log('avatarToSave:', avatarToSave);
       console.log('===============================');
       
-      const response = await fetch('http://localhost:3001/api/v1/auth/me', {
+      const response = await fetch(`${BASE_URL}/auth/me`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -306,13 +311,16 @@ const ProfileInformation = () => {
   // Avatar upload handlers with immediate database save
   const saveAvatarToDatabase = async (avatarData) => {
     if (!user || !userProfile) return false;
+
+    // ✅ DYNAMICALLY READ THE URL FROM YOUR .ENV FILE
+    const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
     
     try {
       setUploadLoading(true);
       setUploadProgress(30);
       
       const token = user.token || localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/auth/me', {
+      const response = await fetch(`${BASE_URL}/auth/me`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,

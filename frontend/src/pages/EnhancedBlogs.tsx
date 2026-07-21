@@ -566,9 +566,10 @@ const EnhancedBlogs: React.FC = () => {
 
   // Load blog items from database
   const loadBlogItems = async () => {
+    const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3001/api/v1/blog_posts');
+      const response = await fetch(`${BASE_URL}/blog_posts`);
       const result = await response.json();
       
       if (result.success) {
@@ -722,8 +723,9 @@ const EnhancedBlogs: React.FC = () => {
     try {
       // Fetch the full blog post content for editing
       const token = user?.token || localStorage.getItem('token');
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       const identifier = (item as EnhancedBlogItem).slug || item.id;
-      const response = await fetch(`http://localhost:3001/api/v1/blog_posts/${identifier}`, {
+      const response = await fetch(`${BASE_URL}/blog_posts/${identifier}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -773,7 +775,8 @@ const EnhancedBlogs: React.FC = () => {
         const token = user?.token || localStorage.getItem('token');
         // Use slug if available, otherwise use ID
         const identifier = (item as EnhancedBlogItem).slug || item.id;
-        const response = await fetch(`http://localhost:3001/api/v1/blog_posts/${identifier}`, {
+        const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+        const response = await fetch(`${BASE_URL}/blog_posts/${identifier}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -840,8 +843,8 @@ const EnhancedBlogs: React.FC = () => {
         // Provide a default image if none is specified
         imageUrl = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80';
       }
-
-      const response = await fetch('http://localhost:3001/api/v1/blog_posts', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/blog_posts`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -941,7 +944,8 @@ const EnhancedBlogs: React.FC = () => {
 
       // Use slug if available, otherwise use ID
       const identifier = editingItem.slug || editingItem.id;
-      const response = await fetch(`http://localhost:3001/api/v1/blog_posts/${identifier}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/blog_posts/${identifier}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,

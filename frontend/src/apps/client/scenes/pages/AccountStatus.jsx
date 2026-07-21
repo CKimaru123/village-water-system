@@ -56,6 +56,8 @@ const AccountStatus = () => {
   const [submitting, setSubmitting] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
 
+  const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+
   const [pauseForm, setPauseForm] = useState({
     reason: "",
     start_date: "",
@@ -80,7 +82,7 @@ const AccountStatus = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/client/status', {
+      const response = await fetch(`${BASE_URL}/client/status`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -132,7 +134,7 @@ const AccountStatus = () => {
     try {
       setSubmitting(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/client/status/request-pause', {
+      const response = await fetch(`${BASE_URL}/client/status/request-pause`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -168,7 +170,7 @@ const AccountStatus = () => {
     try {
       setSubmitting(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/client/status/request-pause', {
+      const response = await fetch(`${BASE_URL}/client/status/request-pause`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -207,7 +209,7 @@ const AccountStatus = () => {
     try {
       setSubmitting(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/client/status/request-reactivation', {
+      const response = await fetch(`${BASE_URL}/client/status/request-reactivation`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -243,7 +245,7 @@ const AccountStatus = () => {
     try {
       setSubmitting(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/client/appeals', {
+      const response = await fetch(`${BASE_URL}/client/appeals`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

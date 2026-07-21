@@ -22,7 +22,11 @@ import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
 import adminApi from "../../../utils/api";
 
-const BASE_WS = "ws://localhost:3001/cable";
+// const wsUrl = `ws://localhost:3001/cable?token=${token}`;
+const BASE_WS = process.env.REACT_APP_CABLE_URL || 'wss://village-water-system-backend.onrender.com/cable';
+// const wsUrl = `${BASE_WS}?token=${token}`; 
+// console.log('WebSocket URL:', wsUrl);
+//const BASE_WS = "ws://localhost:3001/cable";
 const MAX_RETRIES = 5;
 const RETRY_BASE_MS = 2000;
 

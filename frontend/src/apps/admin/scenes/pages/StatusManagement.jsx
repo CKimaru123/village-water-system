@@ -70,8 +70,8 @@ const StatusManagement = () => {
         ...(searchTerm && { search: searchTerm }),
         ...(statusFilter && { status: statusFilter })
       });
-
-      const response = await fetch(`http://localhost:3001/api/v1/admin_management/users?${params}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/admin_management/users?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -107,8 +107,8 @@ const StatusManagement = () => {
     try {
       setUpdating(true);
       const token = localStorage.getItem('token');
-      
-      const response = await fetch(`http://localhost:3001/api/v1/admin_management/users/${selectedUser.id}`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/admin_management/users/${selectedUser.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

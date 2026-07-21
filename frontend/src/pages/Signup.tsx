@@ -997,7 +997,11 @@ const Signup: React.FC = () => {
     } catch (error) {
       console.error("Network error:", error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      alert(`❌ Network error: ${errorMessage}\n\nPlease check:\n1. Backend server is running on http://127.0.0.1:3001\n2. Internet connection is stable`);
+      
+      // Try to get the actual API URL being used
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      
+      alert(`❌ Network error: ${errorMessage}\n\nPlease check:\n1. Backend server is running on ${apiUrl.replace('/api/v1', '')}\n2. Internet connection is stable\n3. CORS is configured correctly`);
       setIsSubmitting(false);
     }
   };

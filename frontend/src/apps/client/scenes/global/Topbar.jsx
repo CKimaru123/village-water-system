@@ -444,7 +444,8 @@ const Topbar = () => {
     
     try {
       const token = user.token || localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3001/api/v1/auth/me`, {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/auth/me`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,

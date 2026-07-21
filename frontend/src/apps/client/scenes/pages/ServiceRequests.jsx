@@ -24,7 +24,7 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import PendingIcon from "@mui/icons-material/Pending";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-const BASE = "http://localhost:3001/api/v1";
+const BASE = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
 
 const getToken = () => localStorage.getItem("token");
 

@@ -13,7 +13,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
-const BASE_URL = "http://localhost:3001/api/v1";
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
 
 const statusColor = (s, colors) => {
   if (s === "verified") return colors.greenAccent[500];

@@ -13,7 +13,8 @@ import TagIcon from "@mui/icons-material/Tag";
 import { useLocation } from "react-router-dom";
 import api from "../../../utils/api";
 
-const BASE_WS = "ws://localhost:3001/cable";
+// const BASE_WS = "ws://localhost:3001/cable";
+const BASE_WS = process.env.REACT_APP_CABLE_URL || 'ws://localhost:3001/cable';
 const MAX_RETRIES = 5;
 const RETRY_BASE_MS = 2000;
 

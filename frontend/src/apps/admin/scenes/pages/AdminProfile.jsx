@@ -58,7 +58,8 @@ const AdminProfile = () => {
     setLoading(true);
     try {
       const token = user.token || localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/auth/me', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -101,8 +102,8 @@ const AdminProfile = () => {
       console.log('editedProfile.avatar:', editedProfile.avatar);
       console.log('avatarToSave:', avatarToSave);
       console.log('===============================');
-      
-      const response = await fetch('http://localhost:3001/api/v1/auth/me', {
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      const response = await fetch(`${BASE_URL}/auth/me`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -159,9 +160,9 @@ const AdminProfile = () => {
     try {
       setUploadLoading(true);
       setUploadProgress(30);
-      
+      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       const token = user.token || localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/v1/auth/me', {
+      const response = await fetch(`${BASE_URL}/auth/me`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
