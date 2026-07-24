@@ -34,20 +34,56 @@ class RealTimeNotificationService
       }
     }
 
-    # Notify the specific client via WebSocket
-    ActionCable.server.broadcast("client_#{client_id}", notification_data)
+    # # Notify the specific client via WebSocket
+    # ActionCable.server.broadcast("client_#{client_id}", notification_data)
     
+    # # Notify all admin users about the change
+    # admin_notification_data = notification_data.merge({
+    #   type: 'admin_profile_update',
+    #   notification: admin_notification ? {
+    #     id: admin_notification.id,
+    #     title: admin_notification.title,
+    #     message: admin_notification.message,
+    #     time_ago: admin_notification.time_ago,
+    #     action_url: admin_notification.action_url
+    #   } : nil
+    # })
+
+    # Notify the specific client via WebSocket
+    ActionCable.server.broadcast("client_#{client_id}", notification_data.merge({
+      user_id: client_id,
+      notification: {
+        id: notification.id,
+        title: notification.title,
+        message: notification.message,
+        notification_type: notification.notification_type,
+        category: notification.category,
+        priority: notification.priority,
+        read: notification.read,
+        created_at: notification.created_at,
+        action_url: notification.action_url,
+        time_ago: notification.time_ago
+      }
+    }))
+
     # Notify all admin users about the change
-    admin_notification_data = notification_data.merge({
+    ActionCable.server.broadcast("admin_updates", notification_data.merge({
       type: 'admin_profile_update',
+      user_id: modified_by.id,
       notification: admin_notification ? {
         id: admin_notification.id,
         title: admin_notification.title,
         message: admin_notification.message,
-        time_ago: admin_notification.time_ago,
-        action_url: admin_notification.action_url
+        notification_type: admin_notification.notification_type,
+        category: admin_notification.category,
+        priority: admin_notification.priority,
+        read: admin_notification.read,
+        created_at: admin_notification.created_at,
+        action_url: admin_notification.action_url,
+        time_ago: admin_notification.time_ago
       } : nil
-    })
+    }))
+
     ActionCable.server.broadcast("admin_updates", admin_notification_data)
     
     # Log the notification
