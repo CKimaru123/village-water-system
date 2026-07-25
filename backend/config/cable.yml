@@ -9,6 +9,11 @@ test:
 #   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
 #   channel_prefix: backend_production
 
+# production:
+#   adapter: async # <-- CHANGED FROM redis TO async
+#   # If you ever upgrade to a paid Render plan with Redis, you can change this back and add the REDIS_URL env var.
+
 production:
-  adapter: async # <-- CHANGED FROM redis TO async
-  # If you ever upgrade to a paid Render plan with Redis, you can change this back and add the REDIS_URL env var.
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: village_water_production
