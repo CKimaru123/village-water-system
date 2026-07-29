@@ -394,9 +394,14 @@ Rails.application.routes.draw do
         end
       end
 
+      # # WhatsApp Webhook Endpoint (RECEIVE ONLY - Meta will call this)
+      # get  '/webhooks/whatsapp', to: 'whatsapp#verify'   # For Facebook's verification handshake
+      # post '/webhooks/whatsapp', to: 'whatsapp#receive'  # For actual inbound messages/status
+
       # WhatsApp Webhook Endpoint (RECEIVE ONLY - Meta will call this)
-      get  '/webhooks/whatsapp', to: 'whatsapp#verify'   # For Facebook's verification handshake
-      post '/webhooks/whatsapp', to: 'whatsapp#receive'  # For actual inbound messages/status
+      get  '/webhooks/whatsapp', to: '/whatsapp#verify'   # leading slash escapes the namespace
+      post '/webhooks/whatsapp', to: '/whatsapp#receive'
+
 
       # Community Tasks + Volunteer sign-ups
       resources :community_tasks, only: [:index, :show, :create, :update, :destroy] do
@@ -429,4 +434,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # WhatsApp webhook — must be outside api/v1 namespace so Meta can reach it
+  # without authentication. Full URL: /webhooks/whatsapp
+  # get  '/webhooks/whatsapp', to: 'whatsapp#verify'
+  # post '/webhooks/whatsapp', to: 'whatsapp#receive'
+
 end
