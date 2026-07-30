@@ -1,6 +1,10 @@
 class Api::V1::PaymentsController < ApplicationController
-  before_action :authenticate_request
-  before_action :authorize_admin!, only: [:index_all, :record, :bulk_prompt, :bulk_stk_push]
+  # before_action :authenticate_request
+  # before_action :authorize_admin!, only: [:index_all, :record, :bulk_prompt, :bulk_stk_push]
+
+  skip_before_action :authenticate_request, only: [:mpesa_callback, :airtel_callback, :flutterwave_callback]
+  skip_before_action :verify_authenticity_token, only: [:mpesa_callback, :airtel_callback, :flutterwave_callback], raise: false
+
 
   # GET /api/v1/payments
   def index
@@ -165,6 +169,26 @@ class Api::V1::PaymentsController < ApplicationController
       }
     }
   end
+
+  # GET /api/v1/payments/status?checkout_request_id=XXX
+  def status
+    pending = PendingPayment.find_by(checkout_request_id: params[:checkout_request_id])
+
+    if pending.nil?
+      return render json: { success: false, message: "Payment not found" }, status: :not_found
+    end
+
+    render json: {
+      success: true,
+      data: {
+        status: pending.status,
+        amount: pending.amount,
+        payment_method: pending.payment_method,
+        payment_id: pending.payment_id
+      }
+    }
+  end
+
 
   # POST /api/v1/payments/record — Admin manually records a payment
   def record

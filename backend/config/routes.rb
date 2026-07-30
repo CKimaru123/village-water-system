@@ -334,6 +334,7 @@ Rails.application.routes.draw do
       # Payments (client + admin)
       resources :payments, only: [:index, :create] do
         collection do
+          get 'status', to: 'payments#status'  # ← add this
           get  :admin_all,         to: 'payments#index_all'
           post :record,            to: 'payments#record'
           post :bulk_prompt,       to: 'payments#bulk_prompt'
@@ -346,7 +347,7 @@ Rails.application.routes.draw do
       post 'payments/mpesa_callback',       to: 'payments#mpesa_callback'
       post 'payments/airtel_callback',      to: 'payments#airtel_callback'
       post 'payments/flutterwave_callback', to: 'payments#flutterwave_callback'
-
+      
       # IoT / Smart Meter ingestion endpoints (hardware token auth)
       namespace :iot do
         post 'readings',             to: '/api/v1/iot#create_reading'
@@ -439,5 +440,10 @@ Rails.application.routes.draw do
   # without authentication. Full URL: /webhooks/whatsapp
   # get  '/webhooks/whatsapp', to: 'whatsapp#verify'
   # post '/webhooks/whatsapp', to: 'whatsapp#receive'
+
+  # Payment provider callbacks — MUST be outside authentication
+  post '/api/v1/payments/mpesa_callback',       to: 'api/v1/payments#mpesa_callback'
+  post '/api/v1/payments/airtel_callback',      to: 'api/v1/payments#airtel_callback'
+  post '/api/v1/payments/flutterwave_callback', to: 'api/v1/payments#flutterwave_callback'
 
 end
