@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from './useAuth';
 import useRealTimeUpdates from './useRealTimeUpdates';
 
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+
 const useNotifications = () => {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
@@ -78,7 +80,7 @@ const useNotifications = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      // const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       const response = await fetch(`${BASE_URL}/notifications`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -106,7 +108,7 @@ const useNotifications = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      // const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       const response = await fetch(`${BASE_URL}/notifications/unread_count`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -131,7 +133,7 @@ const useNotifications = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      // const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       const response = await fetch(`${BASE_URL}/notifications/${notificationId}/mark_read`, {
         method: 'PATCH',
         headers: {
@@ -165,7 +167,7 @@ const useNotifications = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      // const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       const response = await fetch(`${BASE_URL}/notifications/mark_all_read`, {
         method: 'PATCH',
         headers: {
@@ -199,7 +201,7 @@ const useNotifications = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+      // const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
       const response = await fetch(`${BASE_URL}/notifications/${notificationId}`, {
         method: 'DELETE',
         headers: {

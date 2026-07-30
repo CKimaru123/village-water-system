@@ -313,7 +313,8 @@ const Topbar = () => {
       >
         <InputBase
           sx={{ ml: 2, flex: 1, color: colors.grey[100] }}
-          placeholder={t("searchPlaceholder")}
+          // placeholder={t("searchPlaceholder")}
+          placeholder={t("searchPlaceholder", "Search pages or text...")}
           value={searchTerm}
           onChange={handleChange}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}

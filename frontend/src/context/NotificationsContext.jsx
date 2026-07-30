@@ -1,8 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
 
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+// const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1';
+   // ✅ Change this:
+const BASE = process.env.REACT_APP_API_URL || "http://localhost:3001/api/v1";
 const NotificationsContext = createContext(undefined);
+const cableBaseUrl = process.env.REACT_APP_CABLE_URL || 'wss://village-water-system-backend.onrender.com/cable';
+
 
 // ── Quiet hours check ─────────────────────────────────────────────────────────
 // Returns true if current local time falls within the quiet window
@@ -67,7 +71,7 @@ export const NotificationsProvider = ({ children }) => {
     try {
       console.debug("[NotificationsContext] Fetching notifications for user", user.id);
       setLoading(true);
-      const res = await fetch(`${BASE_URL}/notifications`, { headers: headers() });
+      const res = await fetch(`${BASE}/notifications`, { headers: headers() });
       if (res.ok) {
         const data = await res.json();
         console.debug("[NotificationsContext] fetchNotifications response", data);
@@ -86,7 +90,7 @@ export const NotificationsProvider = ({ children }) => {
   // ── Mark single as read ───────────────────────────────────────────────────
   const markAsRead = useCallback(async (id) => {
     try {
-      const res = await fetch(`${BASE_URL}/notifications/${id}/mark_read`, {
+      const res = await fetch(`${BASE}/notifications/${id}/mark_read`, {
         method: "PATCH", headers: headers(),
       });
       if (res.ok) {
@@ -102,7 +106,7 @@ export const NotificationsProvider = ({ children }) => {
   // ── Mark all as read ──────────────────────────────────────────────────────
   const markAllAsRead = useCallback(async () => {
     try {
-      const res = await fetch(`${BASE_URL}/notifications/mark_all_read`, {
+      const res = await fetch(`${BASE}/notifications/mark_all_read`, {
         method: "PATCH", headers: headers(),
       });
       if (res.ok) {
@@ -115,7 +119,7 @@ export const NotificationsProvider = ({ children }) => {
   // ── Delete notification ───────────────────────────────────────────────────
   const deleteNotification = useCallback(async (id) => {
     try {
-      const res = await fetch(`${BASE_URL}/notifications/${id}`, {
+      const res = await fetch(`${BASE}/notifications/${id}`, {
         method: "DELETE", headers: headers(),
       });
       if (res.ok) {
@@ -145,7 +149,7 @@ export const NotificationsProvider = ({ children }) => {
     if (!user) return;
     try {
       setPrefsLoading(true);
-      const res = await fetch(`${BASE_URL}/client/notification_preferences`, { headers: headers() });
+      const res = await fetch(`${BASE}/client/notification_preferences`, { headers: headers() });
       if (res.ok) {
         const data = await res.json();
         const loaded = data.data?.preferences || data.preferences || {};
@@ -158,7 +162,7 @@ export const NotificationsProvider = ({ children }) => {
 
   // ── Save preferences ──────────────────────────────────────────────────────
   const savePreferences = useCallback(async (prefs) => {
-    const res = await fetch(`${BASE_URL}/client/notification_preferences`, {
+    const res = await fetch(`${BASE}/client/notification_preferences`, {
       method: "PATCH", headers: headers(),
       body: JSON.stringify({ preferences: prefs }),
     });
@@ -167,6 +171,52 @@ export const NotificationsProvider = ({ children }) => {
     prefsRef.current = prefs;
   }, [headers]);
 
+  // // ── WebSocket (ActionCable) ───────────────────────────────────────────────
+  // useEffect(() => {
+  //   if (!user) return;
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+
+  //   import("@rails/actioncable").then(({ createConsumer }) => {
+  //     // 1. Define the base URL (falls back to your deployed Render URL if .env is missing)
+  //     // const cableBaseUrl = process.env.REACT_APP_CABLE_URL || 'wss://village-water-system-backend.onrender.com/cable';
+
+  //     // 2. Create the consumer, appending the token for authentication
+  //     const cable = createConsumer(`${cableBaseUrl}?token=${token}`);
+  //     // 3. Keep your existing ref assignment exactly as it was
+  //     cableRef.current = cable;
+
+  //     const sub = cable.subscriptions.create(
+  //       { channel: "ProfileUpdatesChannel", client_id: user.id },
+  //       {
+  //         received(data) {
+  //           console.debug("[NotificationsContext] ActionCable received", data);
+  //           if (data.notification) {
+  //             if (data.type === "new_notification" && String(data.user_id) === String(user.id)) {
+  //               console.debug("[NotificationsContext] New notification for user", user.id, data.notification);
+  //               addNotification(data.notification);
+  //             } else if (data.type === "profile_update" || data.type === "admin_profile_update") {
+  //               console.debug("[NotificationsContext] Profile update notification", data.notification);
+  //               addNotification(data.notification);
+  //             }
+  //           }
+  //         },
+  //       }
+  //     );
+  //     subRef.current = sub;
+  //   }).catch(console.error);
+
+  //   return () => {
+  //     subRef.current?.unsubscribe();
+  //     cableRef.current?.disconnect();
+  //   };
+  // }, [user, addNotification]);
+
+
+  // ── Keep a ref to the latest addNotification so the WS closure never goes stale ──
+  const addNotificationRef = useRef(addNotification);
+  useEffect(() => { addNotificationRef.current = addNotification; }, [addNotification]);
+
   // ── WebSocket (ActionCable) ───────────────────────────────────────────────
   useEffect(() => {
     if (!user) return;
@@ -174,28 +224,30 @@ export const NotificationsProvider = ({ children }) => {
     if (!token) return;
 
     import("@rails/actioncable").then(({ createConsumer }) => {
-      // 1. Define the base URL (falls back to your deployed Render URL if .env is missing)
-      const cableBaseUrl = process.env.REACT_APP_CABLE_URL || 'wss://village-water-system-backend.onrender.com/cable';
-
-      // 2. Create the consumer, appending the token for authentication
       const cable = createConsumer(`${cableBaseUrl}?token=${token}`);
-
-      // 3. Keep your existing ref assignment exactly as it was
       cableRef.current = cable;
 
       const sub = cable.subscriptions.create(
         { channel: "ProfileUpdatesChannel", client_id: user.id },
         {
+          connected() {
+            console.debug("[NotificationsContext] ActionCable connected");
+          },
+          disconnected() {
+            console.debug("[NotificationsContext] ActionCable disconnected");
+          },
           received(data) {
             console.debug("[NotificationsContext] ActionCable received", data);
-            if (data.notification) {
-              if (data.type === "new_notification" && data.user_id === user.id) {
-                console.debug("[NotificationsContext] New notification for user", user.id, data.notification);
-                addNotification(data.notification);
-              } else if (data.type === "profile_update" || data.type === "admin_profile_update") {
-                console.debug("[NotificationsContext] Profile update notification", data.notification);
-                addNotification(data.notification);
-              }
+            if (!data.notification) return;
+
+            const isForMe =
+              data.type === "new_notification" && String(data.user_id) === String(user.id);
+            const isProfileUpdate =
+              data.type === "profile_update" || data.type === "admin_profile_update";
+
+            if (isForMe || isProfileUpdate) {
+              console.debug("[NotificationsContext] Calling addNotification", data.notification);
+              addNotificationRef.current(data.notification);
             }
           },
         }
@@ -207,7 +259,9 @@ export const NotificationsProvider = ({ children }) => {
       subRef.current?.unsubscribe();
       cableRef.current?.disconnect();
     };
-  }, [user, addNotification]);
+  }, [user]); // addNotification removed — ref keeps it fresh
+
+
 
   // ── Load on mount / user change ───────────────────────────────────────────
   useEffect(() => {
