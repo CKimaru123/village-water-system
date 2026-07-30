@@ -8,7 +8,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     # Allow requests from React frontend during development
-    origins "https://village-water-system.onrender.com" # Add this when you deploy frontend
+    origins "https://village-water-system.onrender.com", # Add this when you deploy frontend
             "http://localhost:3000", # local development
             "http://127.0.0.1:3000", # local development
             'http://localhost:3001'   # alternative local port
