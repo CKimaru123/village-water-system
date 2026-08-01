@@ -602,25 +602,52 @@ const CarbonFootprintCalculator = () => {
   const simPct = baseCarbon > 0 ? Math.min(100, ((existingTreeOffset + totalSaving) / baseCarbon) * 100).toFixed(1) : 0;
 
   // Scope breakdown
-  const scopeData = [
-    { id: "Scope 1 – Direct", label: "Scope 1 – Direct", value: Math.round(carbonKg * 0.15), color: "#e05c5c" },
-    { id: "Scope 2 – Electricity", label: "Scope 2 – Electricity", value: Math.round(carbonKg * 0.55), color: "#f0c040" },
-    { id: "Scope 3 – Supply Chain", label: "Scope 3 – Supply Chain", value: Math.round(carbonKg * 0.30), color: "#4db6e4" },
+  // const scopeData = [
+  //   { id: "Scope 1 – Direct", label: "Scope 1 – Direct", value: Math.round(carbonKg * 0.15), color: "#e05c5c" },
+  //   { id: "Scope 2 – Electricity", label: "Scope 2 – Electricity", value: Math.round(carbonKg * 0.55), color: "#f0c040" },
+  //   { id: "Scope 3 – Supply Chain", label: "Scope 3 – Supply Chain", value: Math.round(carbonKg * 0.30), color: "#4db6e4" },
+  // ];
+
+    // ✅ Sanitized Scope breakdown
+  const safeCarbon = typeof carbonKg === 'number' ? carbonKg : 0;
+  const safeScopeData = [
+    { id: "Scope 1 – Direct", label: "Scope 1 – Direct", value: Math.max(0, Math.round(safeCarbon * 0.15)), color: "#e05c5c" },
+    { id: "Scope 2 – Electricity", label: "Scope 2 – Electricity", value: Math.max(0, Math.round(safeCarbon * 0.55)), color: "#f0c040" },
+    { id: "Scope 3 – Supply Chain", label: "Scope 3 – Supply Chain", value: Math.max(0, Math.round(safeCarbon * 0.30)), color: "#4db6e4" },
   ];
 
   // Trend line chart
-  const lineData = trends.length > 0 ? [{
+  // const lineData = trends.length > 0 ? [{
+  //   id: "CO₂ (kg)",
+  //   color: "#4cceac",
+  //   data: trends.map(t => ({
+  //     x: t.label || t.month,
+  //     y: parseFloat(((t.consumption_m3 || 0) * CARBON_FACTOR).toFixed(2)),
+  //   })),
+  // }] : [{ id: "CO₂ (kg)", color: "#4cceac", data: [{ x: "No data", y: 0 }] }];
+
+    // ✅ Sanitized Trend line chart
+  const safeLineData = trends.length > 0 ? [{
     id: "CO₂ (kg)",
     color: "#4cceac",
     data: trends.map(t => ({
-      x: t.label || t.month,
-      y: parseFloat(((t.consumption_m3 || 0) * CARBON_FACTOR).toFixed(2)),
+      x: String(t.label || t.month || "Unknown"),
+      // ✅ Force y to be a strict number, defaulting to 0 if null/undefined/NaN
+      y: typeof t.consumption_m3 === 'number' ? parseFloat(((t.consumption_m3) * CARBON_FACTOR).toFixed(2)) : 0,
     })),
   }] : [{ id: "CO₂ (kg)", color: "#4cceac", data: [{ x: "No data", y: 0 }] }];
 
   // Benchmark bar data
-  const benchmarkData = BENCHMARK_DATA.map(b => ({
-    ...b, value: b.category === "You" ? parseFloat(carbonKg.toFixed(1)) : b.value,
+  // const benchmarkData = BENCHMARK_DATA.map(b => ({
+  //   ...b, value: b.category === "You" ? parseFloat(carbonKg.toFixed(1)) : b.value,
+  // }));
+
+  // ✅ Sanitized Benchmark bar data
+  const safeBenchmarkData = BENCHMARK_DATA.map(b => ({
+    ...b, 
+    value: b.category === "You" 
+      ? (typeof carbonKg === 'number' ? parseFloat(carbonKg.toFixed(1)) : 0) 
+      : (typeof b.value === 'number' ? b.value : 0), // ✅ Force value to be a strict number
   }));
 
   // Gamification badges
@@ -848,7 +875,7 @@ const CarbonFootprintCalculator = () => {
                 <Typography variant="h5" color={colors.grey[100]} mb={2}>Scope Breakdown (GHG Protocol)</Typography>
                 <Box height={260}>
                   <ResponsivePie
-                    data={scopeData}
+                    data={safeScopeData} // ✅ Use the sanitized data
                     margin={{ top: 20, right: 80, bottom: 20, left: 80 }}
                     innerRadius={0.55}
                     padAngle={2}
@@ -886,7 +913,7 @@ const CarbonFootprintCalculator = () => {
                 <Typography variant="h5" color={colors.grey[100]} mb={2}>CO₂ Emissions Trend (12 months)</Typography>
                 <Box height={280}>
                   <ResponsiveLine
-                    data={lineData}
+                    data={safeLineData} // ✅ Use the sanitized data
                     margin={{ top: 20, right: 30, bottom: 50, left: 60 }}
                     xScale={{ type: "point" }}
                     yScale={{ type: "linear", min: 0, max: "auto" }}
@@ -927,8 +954,7 @@ const CarbonFootprintCalculator = () => {
                 </Box>
                 <Box height={200}>
                   <ResponsiveBar
-                    data={benchmarkData}
-                    keys={["value"]}
+                    data={safeBenchmarkData} // ✅ Use the sanitized data
                     indexBy="category"
                     margin={{ top: 10, right: 20, bottom: 40, left: 60 }}
                     padding={0.3}
