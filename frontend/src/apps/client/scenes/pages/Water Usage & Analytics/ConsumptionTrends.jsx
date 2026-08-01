@@ -208,7 +208,7 @@ const ConsumptionTrends = () => {
             <Card sx={{ backgroundColor: colors.primary[400], height: "100%" }}>
               <CardContent>
                 <Typography variant="h5" color={colors.grey[100]} mb={2}>Usage Zone Breakdown</Typography>
-                {zones.length === 0 ? (
+                {/* {zones.length === 0 ? (
                   <Typography color={colors.grey[500]} variant="body2">No zone data configured.</Typography>
                 ) : (
                   <>
@@ -217,6 +217,40 @@ const ConsumptionTrends = () => {
                         <Pie data={zones} cx="50%" cy="50%" innerRadius={50} outerRadius={85}
                           paddingAngle={4} dataKey="value">
                           {zones.map((z, i) => <Cell key={i} fill={z.color} />)}
+                        </Pie>
+                        <RechartsTooltip {...tooltipStyle} formatter={v => [`${v}%`, "Share"]} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                    <Box display="flex" flexWrap="wrap" gap={0.5} mt={1}>
+                      {zones.map((z, i) => (
+                        <Chip key={i} label={`${z.name} ${z.value}%`} size="small"
+                          sx={{ backgroundColor: z.color + "cc", color: "#fff", fontSize: "0.68rem" }} />
+                      ))}
+                    </Box>
+                    <Typography variant="caption" color={colors.grey[500]} mt={1} display="block">
+                      Zone distribution is estimated. Contact admin to configure per-zone sub-meters.
+                    </Typography>
+                  </>
+                )} */}
+                {zones.length === 0 ? (
+                  <Typography color={colors.grey[500]} variant="body2">No zone data configured.</Typography>
+                ) : (
+                  <>
+                    <ResponsiveContainer width="100%" height={200}>
+                      <PieChart>
+                        <Pie 
+                          data={zones.filter(z => z.value !== undefined && z.value !== null)} // ✅ Filters out bad data that crashes animation
+                          cx="50%" 
+                          cy="50%" 
+                          innerRadius={50} 
+                          outerRadius={85}
+                          paddingAngle={4} 
+                          dataKey="value"
+                          isAnimationActive={true} // ✅ Explicitly keeps animations enabled
+                        >
+                          {zones.filter(z => z.value !== undefined && z.value !== null).map((z, i) => (
+                            <Cell key={i} fill={z.color} />
+                          ))}
                         </Pie>
                         <RechartsTooltip {...tooltipStyle} formatter={v => [`${v}%`, "Share"]} />
                       </PieChart>
