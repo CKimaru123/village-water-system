@@ -176,28 +176,63 @@ const CarbonFootprintAnalysis = () => {
   const avgPerClient = activeClients > 0 ? (totalCarbon / activeClients).toFixed(1) : "—";
 
   // Scope breakdown for pie
-  const scopeData = [
-    { id: "Scope 1 – Direct", label: "Scope 1", value: Math.round(totalCarbon * 0.15), color: "#e05c5c" },
-    { id: "Scope 2 – Electricity", label: "Scope 2", value: Math.round(totalCarbon * 0.55), color: "#f0c040" },
-    { id: "Scope 3 – Supply Chain", label: "Scope 3", value: Math.round(totalCarbon * 0.30), color: "#4db6e4" },
-  ];
+  // const scopeData = [
+  //   { id: "Scope 1 – Direct", label: "Scope 1", value: Math.round(totalCarbon * 0.15), color: "#e05c5c" },
+  //   { id: "Scope 2 – Electricity", label: "Scope 2", value: Math.round(totalCarbon * 0.55), color: "#f0c040" },
+  //   { id: "Scope 3 – Supply Chain", label: "Scope 3", value: Math.round(totalCarbon * 0.30), color: "#4db6e4" },
+  // ];
+
+  // ✅ REPLACE your current scopeData with this:
+  const safeScopeData = [
+    { id: "Scope 1 – Direct", label: "Scope 1", value: typeof totalCarbon === 'number' ? Math.round(totalCarbon * 0.15) : 0, color: "#e05c5c" },
+    { id: "Scope 2 – Electricity", label: "Scope 2", value: typeof totalCarbon === 'number' ? Math.round(totalCarbon * 0.55) : 0, color: "#f0c040" },
+    { id: "Scope 3 – Supply Chain", label: "Scope 3", value: typeof totalCarbon === 'number' ? Math.round(totalCarbon * 0.30) : 0, color: "#4db6e4" },
+  ].filter(d => d.value >= 0); // ✅ Ensures no negative or invalid values slip through
 
   // Monthly trend line (mock if no API data)
-  const trendLine = [{
+  // const trendLine = [{
+  //   id: "Total CO₂ (kg)",
+  //   color: "#4cceac",
+  //   data: data?.monthly_trend || [
+  //     { x: "Dec", y: 0 }, { x: "Jan", y: 0 }, { x: "Feb", y: 0 },
+  //     { x: "Mar", y: 0 }, { x: "Apr", y: 0 }, { x: "May", y: totalCarbon },
+  //   ],
+  // }];
+
+  // ✅ REPLACE your current trendLine with this:
+  const rawTrendData = data?.monthly_trend || [
+    { x: "Dec", y: 0 }, { x: "Jan", y: 0 }, { x: "Feb", y: 0 },
+    { x: "Mar", y: 0 }, { x: "Apr", y: 0 }, { x: "May", y: typeof totalCarbon === 'number' ? totalCarbon : 0 },
+  ];
+
+  const safeTrendLine = [{
     id: "Total CO₂ (kg)",
     color: "#4cceac",
-    data: data?.monthly_trend || [
-      { x: "Dec", y: 0 }, { x: "Jan", y: 0 }, { x: "Feb", y: 0 },
-      { x: "Mar", y: 0 }, { x: "Apr", y: 0 }, { x: "May", y: totalCarbon },
-    ],
+    data: rawTrendData.map(point => ({
+      x: point.x,
+      y: typeof point.y === 'number' ? point.y : 0 // ✅ Force y to be a strict number
+    }))
   }];
 
   // Client tier bar data
-  const tierData = data?.tier_breakdown || [
-    { tier: "Household", clients: 0, carbon: 0, color: colors.blueAccent[400] },
-    { tier: "Institution", clients: 0, carbon: 0, color: colors.greenAccent[400] },
+  // const tierData = data?.tier_breakdown || [
+  //   { tier: "Household", clients: 0, carbon: 0, color: colors.blueAccent[400] },
+  //   { tier: "Institution", clients: 0, carbon: 0, color: colors.greenAccent[400] },
+  //   { tier: "Commercial", clients: 0, carbon: 0, color: "#f0c040" },
+  // ];
+
+  // ✅ REPLACE your current tierData with this:
+  const rawTierData = data?.tier_breakdown || [
+    { tier: "Household", clients: 0, carbon: 0, color: colors.blueAccent?.[400] || "#4db6e4" },
+    { tier: "Institution", clients: 0, carbon: 0, color: colors.greenAccent?.[400] || "#4cceac" },
     { tier: "Commercial", clients: 0, carbon: 0, color: "#f0c040" },
   ];
+
+  const safeTierData = rawTierData.map(d => ({
+    ...d,
+    carbon: typeof d.carbon === 'number' ? d.carbon : 0, // ✅ Force carbon to be a strict number
+    color: d.color || "#4db6e4"
+  }));
 
   const handleExportCSV = () => {
     const rows = [
@@ -385,7 +420,7 @@ const CarbonFootprintAnalysis = () => {
                 <Typography variant="h5" color={colors.grey[100]} mb={2}>Scope Breakdown (GHG Protocol)</Typography>
                 <Box height={260}>
                   <ResponsivePie
-                    data={scopeData}
+                    data={safeScopeData} // ✅ Use the sanitized data
                     margin={{ top: 20, right: 80, bottom: 20, left: 80 }}
                     innerRadius={0.55} padAngle={2} cornerRadius={3}
                     colors={d => d.data.color}
@@ -396,7 +431,7 @@ const CarbonFootprintAnalysis = () => {
                     theme={{ tooltip: { container: { background: colors.primary[500], color: colors.grey[100] } } }}
                   />
                 </Box>
-                {scopeData.map(s => (
+                {safeScopeData.map(s => (
                   <Box key={s.id} display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
                     <Box display="flex" alignItems="center" gap={1}>
                       <Box sx={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: s.color }} />
@@ -415,7 +450,7 @@ const CarbonFootprintAnalysis = () => {
                 <Typography variant="h5" color={colors.grey[100]} mb={2}>Monthly Carbon Trend</Typography>
                 <Box height={280}>
                   <ResponsiveLine
-                    data={trendLine}
+                    data={safeTrendLine} // ✅ Use the sanitized data
                     margin={{ top: 20, right: 30, bottom: 50, left: 70 }}
                     xScale={{ type: "point" }} yScale={{ type: "linear", min: 0, max: "auto" }}
                     curve="monotoneX"
@@ -441,7 +476,7 @@ const CarbonFootprintAnalysis = () => {
                 <Typography variant="h5" color={colors.grey[100]} mb={2}>Carbon by Client Tier</Typography>
                 <Box height={200}>
                   <ResponsiveBar
-                    data={tierData} keys={["carbon"]} indexBy="tier"
+                    data={safeTierData} keys={["carbon"]} indexBy="tier"
                     margin={{ top: 10, right: 20, bottom: 40, left: 70 }}
                     padding={0.4} colors={d => d.data.color || colors.blueAccent[400]}
                     axisBottom={{ tickSize: 5 }}
@@ -458,8 +493,6 @@ const CarbonFootprintAnalysis = () => {
             </Card>
           </Grid>
         </Grid>
-      )}
-
       )}
 
       {/* ── Tab 1: Client Carbon Profiles ── */}
