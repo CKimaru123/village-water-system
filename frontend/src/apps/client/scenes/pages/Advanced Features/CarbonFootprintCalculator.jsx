@@ -893,7 +893,7 @@ const CarbonFootprintCalculator = () => {
                   />
                 </Box>
                 <Box mt={1}>
-                  {scopeData.map(s => (
+                  {safeScopeData.map(s => (
                     <Box key={s.id} display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
                       <Box display="flex" alignItems="center" gap={1}>
                         <Box sx={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: s.color }} />
