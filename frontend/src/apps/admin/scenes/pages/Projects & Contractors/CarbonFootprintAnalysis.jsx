@@ -167,13 +167,21 @@ const CarbonFootprintAnalysis = () => {
 
   useEffect(() => { load(); }, [load]);
 
-  // Derived metrics (use API data or fallback to computed)
-  const totalCarbon = data?.total_carbon_kg || 0;
-  const totalEnergy = data?.total_energy_kwh || 0;
-  const totalWater = data?.total_water_pumped_m3 || 0;
-  const totalTrees = data?.equivalent_trees || (totalCarbon / TREE_ABSORPTION);
-  const activeClients = data?.active_clients || 0;
-  const avgPerClient = activeClients > 0 ? (totalCarbon / activeClients).toFixed(1) : "—";
+  // // Derived metrics (use API data or fallback to computed)
+  // const totalCarbon = data?.total_carbon_kg || 0;
+  // const totalEnergy = data?.total_energy_kwh || 0;
+  // const totalWater = data?.total_water_pumped_m3 || 0;
+  // const totalTrees = data?.equivalent_trees || (totalCarbon / TREE_ABSORPTION);
+  // const activeClients = data?.active_clients || 0;
+  // const avgPerClient = activeClients > 0 ? (totalCarbon / activeClients).toFixed(1) : "—";
+
+  // ✅ 1. SAFE DERIVED METRICS (Prevents NaN)
+  const totalCarbon = typeof data?.total_carbon_kg === 'number' ? data.total_carbon_kg : 0;
+  const totalEnergy = typeof data?.total_energy_kwh === 'number' ? data.total_energy_kwh : 0;
+  const totalWater = typeof data?.total_water_pumped_m3 === 'number' ? data.total_water_pumped_m3 : 0;
+  const totalTrees = totalCarbon > 0 ? (totalCarbon / TREE_ABSORPTION) : 0;
+  const activeClients = typeof data?.active_clients === 'number' ? data.active_clients : 0;
+  const avgPerClient = activeClients > 0 ? (totalCarbon / activeClients).toFixed(1) : "0";
 
   // Scope breakdown for pie
   // const scopeData = [
