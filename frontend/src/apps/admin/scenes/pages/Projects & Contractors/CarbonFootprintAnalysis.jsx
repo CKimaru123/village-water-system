@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+// import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+
 import {
   Box, Typography, Card, CardContent, Grid, CircularProgress, Alert,
   Chip, Button, IconButton, Tab, Tabs, Divider, LinearProgress,
@@ -157,8 +159,25 @@ const CarbonFootprintAnalysis = () => {
   const [treeSubmissions, setTreeSubmissions] = useState(MOCK_TREE_SUBMISSIONS);
   const [treeDetailOpen, setTreeDetailOpen] = useState({ open: false, item: null });
 
+  // const load = useCallback(() => {
+  //   setLoading(true);
+  //   adminApi.get("/admin/carbon_footprint/analysis")
+  //     .then(res => setData(res.data?.analysis || res.data || null))
+  //     .catch(() => setData(null))
+  //     .finally(() => setLoading(false));
+  // }, []);
+
+  // useEffect(() => { load(); }, [load]);
+
+    // ── Chart readiness guards ────────────────────────────────────────────────
+  const [chartsReady, setChartsReady] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const chartContainerRef = useRef(null);
+
   const load = useCallback(() => {
     setLoading(true);
+    setChartsReady(false);
+    setLoadProgress(0);
     adminApi.get("/admin/carbon_footprint/analysis")
       .then(res => setData(res.data?.analysis || res.data || null))
       .catch(() => setData(null))
@@ -166,6 +185,48 @@ const CarbonFootprintAnalysis = () => {
   }, []);
 
   useEffect(() => { load(); }, [load]);
+
+  // Once API loading is done, run the 5-second readiness sequence
+  useEffect(() => {
+    if (loading) return;
+
+    // Animate the progress bar over 5 seconds
+    let elapsed = 0;
+    const tick = 100; // ms per step
+    const total = 5000;
+    const progressInterval = setInterval(() => {
+      elapsed += tick;
+      setLoadProgress(Math.min(Math.round((elapsed / total) * 100), 100));
+      if (elapsed >= total) clearInterval(progressInterval);
+    }, tick);
+
+    // After 5 seconds, verify the chart container has dimensions, then allow one paint
+    const readinessTimer = setTimeout(() => {
+      const container = chartContainerRef.current;
+      const hasDimensions = container && container.offsetWidth > 0 && container.offsetHeight > 0;
+
+      const chartData = safeScopeData?.length > 0 && safeTrendLine?.[0]?.data?.length > 0 && safeTierData?.length > 0;
+
+      if (hasDimensions && chartData) {
+        // Wait one paint cycle before mounting charts
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setChartsReady(true);
+          });
+        });
+      } else {
+        // Container not ready — retry once after another paint
+        requestAnimationFrame(() => setChartsReady(true));
+      }
+    }, total);
+
+    return () => {
+      clearInterval(progressInterval);
+      clearTimeout(readinessTimer);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
+
 
   // // Derived metrics (use API data or fallback to computed)
   // const totalCarbon = data?.total_carbon_kg || 0;
@@ -326,14 +387,79 @@ const CarbonFootprintAnalysis = () => {
     setEditTreesDialog({ open: false, client: null });
   };
 
-  if (loading) return (
-    <Box m="20px" display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-      <CircularProgress sx={{ color: colors.blueAccent[500] }} />
+  // if (loading) return (
+  //   <Box m="20px" display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+  //     <CircularProgress sx={{ color: colors.blueAccent[500] }} />
+  //   </Box>
+  // );
+
+    if (loading || !chartsReady) return (
+    <Box m="20px" display="flex" flexDirection="column" justifyContent="center"
+      alignItems="center" minHeight="400px" gap={3}>
+
+      {/* Icon + title */}
+      <Co2Icon sx={{ fontSize: 64, color: colors.greenAccent[400], opacity: 0.85 }} />
+      <Typography variant="h4" color={colors.grey[100]} fontWeight="bold">
+        Loading Carbon Footprint Analysis
+      </Typography>
+      <Typography variant="body2" color={colors.grey[400]} textAlign="center" maxWidth={420}>
+        Fetching emissions data, validating chart dimensions and preparing visualisations…
+      </Typography>
+
+      {/* Progress bar */}
+      <Box width="100%" maxWidth={480}>
+        <Box display="flex" justifyContent="space-between" mb={0.5}>
+          <Typography variant="caption" color={colors.grey[400]}>Preparing charts</Typography>
+          <Typography variant="caption" color={colors.greenAccent[400]} fontWeight="bold">
+            {loadProgress}%
+          </Typography>
+        </Box>
+        <LinearProgress
+          variant="determinate"
+          value={loadProgress}
+          sx={{
+            height: 8,
+            borderRadius: 4,
+            backgroundColor: colors.grey[700],
+            "& .MuiLinearProgress-bar": {
+              borderRadius: 4,
+              background: `linear-gradient(90deg, ${colors.greenAccent[500]}, ${colors.blueAccent[400]})`,
+            },
+          }}
+        />
+      </Box>
+
+      {/* Steps checklist */}
+      <Box display="flex" flexDirection="column" gap={1} width="100%" maxWidth={380}>
+        {[
+          { label: "Connecting to API",          done: loadProgress >= 20  },
+          { label: "Loading emissions data",      done: loadProgress >= 45  },
+          { label: "Validating chart data",       done: loadProgress >= 65  },
+          { label: "Measuring chart containers",  done: loadProgress >= 80  },
+          { label: "Rendering visualisations",    done: loadProgress >= 100 },
+        ].map(step => (
+          <Box key={step.label} display="flex" alignItems="center" gap={1.5}>
+            {step.done
+              ? <CheckCircleIcon sx={{ color: colors.greenAccent[400], fontSize: 20 }} />
+              : <CircularProgress size={18} sx={{ color: colors.grey[500] }} />
+            }
+            <Typography
+              variant="body2"
+              color={step.done ? colors.grey[100] : colors.grey[500]}
+              sx={{ transition: "color 0.4s" }}
+            >
+              {step.label}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 
+
   return (
-    <Box m="20px">
+    // <Box m="20px">
+    <Box m="20px" ref={chartContainerRef}>
       {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb="20px" flexWrap="wrap" gap={1}>
         <Box>
