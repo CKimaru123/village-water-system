@@ -191,46 +191,46 @@ const CarbonFootprintAnalysis = () => {
 
   useEffect(() => { load(); }, [load]);
 
-  // Once API loading is done, run the 5-second readiness sequence
-  useEffect(() => {
-    if (loading) return;
+  // // Once API loading is done, run the 5-second readiness sequence
+  // useEffect(() => {
+  //   if (loading) return;
 
-    // Animate the progress bar over 5 seconds
-    let elapsed = 0;
-    const tick = 100; // ms per step
-    const total = 5000;
-    const progressInterval = setInterval(() => {
-      elapsed += tick;
-      setLoadProgress(Math.min(Math.round((elapsed / total) * 100), 100));
-      if (elapsed >= total) clearInterval(progressInterval);
-    }, tick);
+  //   // Animate the progress bar over 5 seconds
+  //   let elapsed = 0;
+  //   const tick = 100; // ms per step
+  //   const total = 5000;
+  //   const progressInterval = setInterval(() => {
+  //     elapsed += tick;
+  //     setLoadProgress(Math.min(Math.round((elapsed / total) * 100), 100));
+  //     if (elapsed >= total) clearInterval(progressInterval);
+  //   }, tick);
 
-    // After 5 seconds, verify the chart container has dimensions, then allow one paint
-    const readinessTimer = setTimeout(() => {
-      const container = chartContainerRef.current;
-      const hasDimensions = container && container.offsetWidth > 0 && container.offsetHeight > 0;
+  //   // After 5 seconds, verify the chart container has dimensions, then allow one paint
+  //   const readinessTimer = setTimeout(() => {
+  //     const container = chartContainerRef.current;
+  //     const hasDimensions = container && container.offsetWidth > 0 && container.offsetHeight > 0;
 
-      const chartData = safeScopeData?.length > 0 && safeTrendLine?.[0]?.data?.length > 0 && safeTierData?.length > 0;
+  //     const chartData = safeScopeData?.length > 0 && safeTrendLine?.[0]?.data?.length > 0 && safeTierData?.length > 0;
 
-      if (hasDimensions && chartData) {
-        // Wait one paint cycle before mounting charts
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            setChartsReady(true);
-          });
-        });
-      } else {
-        // Container not ready — retry once after another paint
-        requestAnimationFrame(() => setChartsReady(true));
-      }
-    }, total);
+  //     if (hasDimensions && chartData) {
+  //       // Wait one paint cycle before mounting charts
+  //       requestAnimationFrame(() => {
+  //         requestAnimationFrame(() => {
+  //           setChartsReady(true);
+  //         });
+  //       });
+  //     } else {
+  //       // Container not ready — retry once after another paint
+  //       requestAnimationFrame(() => setChartsReady(true));
+  //     }
+  //   }, total);
 
-    return () => {
-      clearInterval(progressInterval);
-      clearTimeout(readinessTimer);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
+  //   return () => {
+  //     clearInterval(progressInterval);
+  //     clearTimeout(readinessTimer);
+  //   };
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [loading]);
 
 
   // // Derived metrics (use API data or fallback to computed)
@@ -307,6 +307,42 @@ const CarbonFootprintAnalysis = () => {
     carbon: typeof d.carbon === 'number' ? d.carbon : 0, // ✅ Force carbon to be a strict number
     color: d.color || "#4db6e4"
   }));
+
+  // Once API loading is done, run the 5-second readiness sequence
+  useEffect(() => {
+    if (loading) return;
+
+    let elapsed = 0;
+    const tick = 100;
+    const total = 5000;
+    const progressInterval = setInterval(() => {
+      elapsed += tick;
+      setLoadProgress(Math.min(Math.round((elapsed / total) * 100), 100));
+      if (elapsed >= total) clearInterval(progressInterval);
+    }, tick);
+
+    const readinessTimer = setTimeout(() => {
+      const container = chartContainerRef.current;
+      const hasDimensions = container && container.offsetWidth > 0 && container.offsetHeight > 0;
+      const chartData = safeScopeData?.length > 0 && safeTrendLine?.[0]?.data?.length > 0 && safeTierData?.length > 0;
+
+      if (hasDimensions && chartData) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setChartsReady(true);
+          });
+        });
+      } else {
+        requestAnimationFrame(() => setChartsReady(true));
+      }
+    }, total);
+
+    return () => {
+      clearInterval(progressInterval);
+      clearTimeout(readinessTimer);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
   const handleExportCSV = () => {
     const rows = [
