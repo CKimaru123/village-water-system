@@ -580,8 +580,11 @@ const CarbonFootprintCalculator = () => {
     }
   };
 
-  const carbonKg = data?.carbon_kg_co2 || data?.carbon_kg || 0;
-  const consumptionM3 = data?.consumption_m3 || 0;
+  // const carbonKg = data?.carbon_kg_co2 || data?.carbon_kg || 0;
+  // const consumptionM3 = data?.consumption_m3 || 0;
+
+  const carbonKg = parseFloat(data?.carbon_kg_co2 ?? data?.carbon_kg ?? 0) || 0;
+  const consumptionM3 = parseFloat(data?.consumption_m3 ?? 0) || 0;
 
   // Use a demo baseline when API returns no data so the simulator is always interactive
   const DEMO_BASELINE = 18.5; // realistic average household kg CO₂e/month
