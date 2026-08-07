@@ -11,9 +11,14 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../../theme";
-import { ResponsivePie } from "@nivo/pie";
-import { ResponsiveLine } from "@nivo/line";
-import { ResponsiveBar } from "@nivo/bar";
+// import { ResponsivePie } from "@nivo/pie";
+// import { ResponsiveLine } from "@nivo/line";
+// import { ResponsiveBar } from "@nivo/bar";
+import {
+  PieChart, Pie, Cell, Tooltip as RechartsTooltip, Legend, ResponsiveContainer,
+  LineChart, Line, XAxis, YAxis, CartesianGrid,
+  BarChart, Bar
+} from "recharts";
 import Co2Icon from "@mui/icons-material/Co2";
 import ForestIcon from "@mui/icons-material/Forest";
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
@@ -552,18 +557,34 @@ const CarbonFootprintAnalysis = () => {
             <Card sx={{ backgroundColor: colors.primary[400] }}>
               <CardContent>
                 <Typography variant="h5" color={colors.grey[100]} mb={2}>Scope Breakdown (GHG Protocol)</Typography>
-                <Box height={260}>
-                  <ResponsivePie
-                    data={safeScopeData} // ✅ Use the sanitized data
-                    margin={{ top: 20, right: 80, bottom: 20, left: 80 }}
-                    innerRadius={0.55} padAngle={2} cornerRadius={3}
-                    colors={d => d.data.color}
-                    borderWidth={1} borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
-                    arcLinkLabelsSkipAngle={10} arcLinkLabelsTextColor={colors.grey[300]}
-                    arcLinkLabelsThickness={2} arcLinkLabelsColor={{ from: "color" }}
-                    arcLabelsSkipAngle={10} arcLabelsTextColor="#fff"
-                    theme={{ tooltip: { container: { background: colors.primary[500], color: colors.grey[100] } } }}
-                  />
+                                <Box height={260}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={safeScopeData}
+                        cx="50%" cy="50%"
+                        innerRadius={70} outerRadius={110}
+                        paddingAngle={2}
+                        dataKey="value"
+                        nameKey="label"
+                        label={({ label, percent }) => `${label} ${(percent * 100).toFixed(0)}%`}
+                        labelLine={false}
+                      >
+                        {safeScopeData.map((entry) => (
+                          <Cell key={entry.id} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      {/* <Tooltip
+                        formatter={(value) => [`${value.toLocaleString()} kg`, "CO₂e"]}
+                        contentStyle={{ background: colors.primary[500], border: "none", color: colors.grey[100] }}
+                      /> */}
+                      <RechartsTooltip
+                        formatter={(value) => [`${value.toLocaleString()} kg`, "CO₂e"]}
+                        contentStyle={{ background: colors.primary[500], border: "none", color: colors.grey[100] }}
+                      />
+
+                    </PieChart>
+                  </ResponsiveContainer>
                 </Box>
                 {safeScopeData.map(s => (
                   <Box key={s.id} display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
@@ -582,7 +603,7 @@ const CarbonFootprintAnalysis = () => {
             <Card sx={{ backgroundColor: colors.primary[400] }}>
               <CardContent>
                 <Typography variant="h5" color={colors.grey[100]} mb={2}>Monthly Carbon Trend</Typography>
-                <Box height={280}>
+                {/* <Box height={280}>
                   <ResponsiveLine
                     data={safeTrendLine} // ✅ Use the sanitized data
                     margin={{ top: 20, right: 30, bottom: 50, left: 70 }}
@@ -600,6 +621,42 @@ const CarbonFootprintAnalysis = () => {
                     }}
                   />
                 </Box>
+                 */}
+                                <Box height={280}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={safeTrendLine[0]?.data || []}
+                      margin={{ top: 20, right: 30, bottom: 50, left: 70 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke={colors.grey[700]} />
+                      <XAxis
+                        dataKey="x"
+                        tick={{ fill: colors.grey[400], fontSize: 12 }}
+                        label={{ value: "Month", position: "insideBottom", offset: -10, fill: colors.grey[300] }}
+                      />
+                      <YAxis
+                        tick={{ fill: colors.grey[400], fontSize: 12 }}
+                        label={{ value: "kg CO₂e", angle: -90, position: "insideLeft", offset: -10, fill: colors.grey[300] }}
+                      />
+                      {/* <Tooltip
+                        formatter={(value) => [`${value} kg CO₂e`, "Total CO₂"]}
+                        contentStyle={{ background: colors.primary[500], border: "none", color: colors.grey[100] }}
+                      /> */}
+                      <RechartsTooltip
+                        formatter={(value) => [`${value} kg CO₂e`, "Total CO₂"]}
+                        contentStyle={{ background: colors.primary[500], border: "none", color: colors.grey[100] }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="y"
+                        stroke="#4cceac"
+                        strokeWidth={2}
+                        dot={{ fill: "#4cceac", strokeWidth: 2, r: 4 }}
+                        activeDot={{ r: 6 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </Box>
               </CardContent>
             </Card>
           </Grid>
@@ -608,7 +665,7 @@ const CarbonFootprintAnalysis = () => {
             <Card sx={{ backgroundColor: colors.primary[400] }}>
               <CardContent>
                 <Typography variant="h5" color={colors.grey[100]} mb={2}>Carbon by Client Tier</Typography>
-                <Box height={200}>
+                {/* <Box height={200}>
                   <ResponsiveBar
                     data={safeTierData} keys={["carbon"]} indexBy="tier"
                     margin={{ top: 10, right: 20, bottom: 40, left: 70 }}
@@ -622,6 +679,37 @@ const CarbonFootprintAnalysis = () => {
                       tooltip: { container: { background: colors.primary[500], color: colors.grey[100] } },
                     }}
                   />
+                </Box> */}
+                                <Box height={200}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={safeTierData}
+                      margin={{ top: 10, right: 20, bottom: 40, left: 70 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke={colors.grey[700]} />
+                      <XAxis
+                        dataKey="tier"
+                        tick={{ fill: colors.grey[400], fontSize: 12 }}
+                      />
+                      <YAxis
+                        tick={{ fill: colors.grey[400], fontSize: 12 }}
+                        label={{ value: "kg CO₂e", angle: -90, position: "insideLeft", offset: -10, fill: colors.grey[300] }}
+                      />
+                      {/* <Tooltip
+                        formatter={(value) => [`${value} kg CO₂e`, "Carbon"]}
+                        contentStyle={{ background: colors.primary[500], border: "none", color: colors.grey[100] }}
+                      /> */}
+                      <RechartsTooltip
+                        formatter={(value) => [`${value} kg CO₂e`, "Carbon"]}
+                        contentStyle={{ background: colors.primary[500], border: "none", color: colors.grey[100] }}
+                      />
+                      <Bar dataKey="carbon" radius={[4, 4, 0, 0]}>
+                        {safeTierData.map((entry) => (
+                          <Cell key={entry.tier} fill={entry.color || colors.blueAccent[400]} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
                 </Box>
               </CardContent>
             </Card>
