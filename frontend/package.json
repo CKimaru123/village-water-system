@@ -121,5 +121,11 @@
     "@types/react-slick": "^0.23.12",
     "cross-env": "^7.0.3",
     "typescript": "^4.9.5"
+  },
+  "overrides": {
+    "@react-spring/web": "9.7.3",
+    "@react-spring/core": "9.7.3",
+    "@react-spring/animated": "9.7.3",
+    "@react-spring/types": "9.7.3"
   }
 }
