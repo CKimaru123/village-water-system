@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme, Chip, Divider } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, useMediaQuery, Chip, Divider } from "@mui/material";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import { useAuth } from "../../../../hooks/useAuth";
@@ -33,7 +33,7 @@ import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsAc
 import NatureIcon from "@mui/icons-material/Nature";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+const Item = ({ title, to, icon, selected, setSelected, onMobileClose }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -47,6 +47,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   const handleClick = () => {
     setSelected(title);
     navigate(targetPath);
+    if (onMobileClose) onMobileClose();
   };
 
   return (
@@ -61,10 +62,11 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const Sidebar = () => {
+const Sidebar = ({ mobileOpen, onMobileClose }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const { user } = useAuth();
@@ -115,85 +117,74 @@ const Sidebar = () => {
   const userInfo = getUserDisplayInfo();
 
   return (
-    <Box
-      sx={{
-        "& .pro-sidebar-inner": {
-          background: `${colors.primary[400]} !important`,
-        },
-        "& .pro-icon-wrapper": {
-          backgroundColor: "transparent !important",
-        },
-        "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
-          color: `${colors.grey[100]} !important`,
-          position: "relative",
-        },
-        "& .pro-inner-item:hover": {
-          color: "#868dfb !important",
-        },
-        "& .pro-menu-item.active > .pro-inner-item": {
-          color: "#6870fa !important",
-        },
-        "& .pro-menu-item.active > .pro-inner-item > .pro-icon-wrapper .pro-icon": {
-          color: "#6870fa !important",
-        },
-        "& .pro-menu-item.active > .pro-inner-item::before": {
-          content: '""',
-          position: "absolute",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: "3px",
-          backgroundColor: "#6870fa",
-          borderRadius: "0 2px 2px 0",
-        },
-        "& .pro-menu-item.active": {
-          backgroundColor: "rgba(104, 112, 250, 0.12) !important",
-          borderRadius: "0 8px 8px 0",
-          marginRight: "8px",
-        },
-      }}
-    >
-      <ProSidebar collapsed={isCollapsed}>
+    <>
+      {/* ── Mobile overlay backdrop ─────────────────────────────────────── */}
+      {isMobile && mobileOpen && (
+        <Box
+          onClick={onMobileClose}
+          sx={{
+            position: "fixed", inset: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 1200,
+          }}
+        />
+      )}
+
+      {/* ── Sidebar panel ──────────────────────────────────────────────── */}
+      <Box
+        sx={{
+          ...(isMobile && {
+            position:   "fixed",
+            top:        0,
+            left:       0,
+            height:     "100vh",
+            zIndex:     1201,
+            transform:  mobileOpen ? "translateX(0)" : "translateX(-100%)",
+            transition: "transform 0.3s ease",
+            overflowY:  "auto",
+          }),
+          "& .pro-sidebar-inner": { background: `${colors.primary[400]} !important` },
+          "& .pro-icon-wrapper":  { backgroundColor: "transparent !important" },
+          "& .pro-inner-item": {
+            padding: "5px 35px 5px 20px !important",
+            color: `${colors.grey[100]} !important`,
+            position: "relative",
+          },
+          "& .pro-inner-item:hover":                                    { color: "#868dfb !important" },
+          "& .pro-menu-item.active > .pro-inner-item":                  { color: "#6870fa !important" },
+          "& .pro-menu-item.active > .pro-inner-item > .pro-icon-wrapper .pro-icon": { color: "#6870fa !important" },
+          "& .pro-menu-item.active > .pro-inner-item::before": {
+            content: '""', position: "absolute", left: 0, top: 0, bottom: 0,
+            width: "3px", backgroundColor: "#6870fa", borderRadius: "0 2px 2px 0",
+          },
+          "& .pro-menu-item.active": {
+            backgroundColor: "rgba(104, 112, 250, 0.12) !important",
+            borderRadius: "0 8px 8px 0", marginRight: "8px",
+          },
+        }}
+      >
+      <ProSidebar collapsed={isMobile ? false : isCollapsed}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-            style={{
-              margin: "10px 0 20px 0",
-              color: colors.grey[100],
-            }}
+            onClick={() => isMobile ? onMobileClose?.() : setIsCollapsed(!isCollapsed)}
+            icon={isCollapsed && !isMobile ? <MenuOutlinedIcon /> : undefined}
+            style={{ margin: "10px 0 20px 0", color: colors.grey[100] }}
           >
-            {!isCollapsed && (
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                ml="15px"
-              >
+            {(!isCollapsed || isMobile) && (
+              <Box display="flex" justifyContent="space-between" alignItems="center" ml="15px">
                 <Box display="flex" alignItems="center">
-                <Box
-                  component="img"
-                  src="/assets/logo.jpg"
-                  alt="BWP Logo"
-                  sx={{
-                    height: 48,
-                    width: "auto",
-                    borderRadius: "8px",
-                    mr: 1,
-                  }}
-                />
-              </Box>
-
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                  <Box component="img" src="/assets/logo.jpg" alt="BWP Logo"
+                    sx={{ height: 48, width: "auto", borderRadius: "8px", mr: 1 }} />
+                </Box>
+                <IconButton onClick={(e) => { e.stopPropagation(); isMobile ? onMobileClose?.() : setIsCollapsed(!isCollapsed); }}>
                   <MenuOutlinedIcon />
                 </IconButton>
               </Box>
             )}
           </MenuItem>
 
-          {!isCollapsed && (
+          {(!isCollapsed || isMobile) && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
                 <img
@@ -291,13 +282,14 @@ const Sidebar = () => {
             </Box>
           )}
 
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          <Box paddingLeft={isCollapsed && !isMobile ? undefined : "10%"}>
             <Item
               title={t("Dashboard")}
               to=""
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              onMobileClose={onMobileClose}
             />
 
             {/* My Account */}
@@ -668,7 +660,8 @@ const Sidebar = () => {
           </Box>
         </Menu>
       </ProSidebar>
-    </Box>
+      </Box>
+    </>
   );
 };
 

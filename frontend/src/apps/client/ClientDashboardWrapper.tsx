@@ -25,6 +25,54 @@ const clientCSS = `
   .client-dashboard-container ::-webkit-scrollbar-track { background:#e0e0e0; }
   .client-dashboard-container ::-webkit-scrollbar-thumb { background:#888; }
   .client-dashboard-container ::-webkit-scrollbar-thumb:hover { background:#555; }
+
+  /* ── Responsive: tablet and mobile ─────────────────────────────────── */
+  @media (max-width: 899px) {
+    /* Content takes full width when sidebar is in overlay mode */
+    .client-dashboard-container .content {
+      width: 100% !important;
+      max-width: 100vw !important;
+      min-width: 0 !important;
+    }
+    .client-dashboard-container main.content {
+      width: 100% !important;
+      max-width: 100vw !important;
+    }
+    /* Prevent the pro-sidebar from taking up layout space on mobile */
+    .client-dashboard-container .app .pro-sidebar {
+      height: 100vh !important;
+    }
+    /* Tables scroll horizontally */
+    .client-dashboard-container .MuiTableContainer-root {
+      overflow-x: auto !important;
+    }
+    /* DataGrid horizontal scroll */
+    .client-dashboard-container .MuiDataGrid-root {
+      overflow-x: auto !important;
+    }
+    /* Reduce page padding on tablet */
+    .client-dashboard-container main > div { padding: 12px !important; }
+  }
+
+  @media (max-width: 599px) {
+    /* Tighter heading sizes on phones */
+    .client-dashboard-container h1,.client-dashboard-container .MuiTypography-h1 { font-size:22px !important; }
+    .client-dashboard-container h2,.client-dashboard-container .MuiTypography-h2 { font-size:19px !important; }
+    .client-dashboard-container h3,.client-dashboard-container .MuiTypography-h3 { font-size:17px !important; }
+    .client-dashboard-container h4,.client-dashboard-container .MuiTypography-h4 { font-size:15px !important; }
+    .client-dashboard-container h5,.client-dashboard-container .MuiTypography-h5 { font-size:13px !important; }
+    /* Stop horizontal overflow on phone */
+    .client-dashboard-container .app {
+      overflow-x: hidden !important;
+    }
+    .client-dashboard-container main.content {
+      overflow-x: hidden !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    /* Thinner scrollbar on mobile */
+    .client-dashboard-container ::-webkit-scrollbar { width: 4px; }
+  }
 `;
 
 const ClientDashboardWrapper: React.FC = () => (

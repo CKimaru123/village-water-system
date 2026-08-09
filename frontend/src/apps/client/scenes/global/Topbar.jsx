@@ -59,6 +59,7 @@ import {
   Box,
   IconButton,
   useTheme,
+  useMediaQuery,
   InputBase,
   Paper,
   List,
@@ -80,6 +81,7 @@ import {
   Switch,
   Chip,
 } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import { ColorModeContext, tokens } from "../../theme";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
@@ -123,13 +125,15 @@ const pagesIndex = [
   { name: "Carbon Footprint Calculator", path: "/carbon-footprint" },
 ];
 
-const Topbar = () => {
+const Topbar = ({ onMobileMenuOpen }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation(); // 🌍 Translation hook
-  const { user } = useAuth(); // Get authenticated user data
+  const { t, i18n } = useTranslation();
+  const { user } = useAuth();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmall  = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -481,14 +485,22 @@ const Topbar = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="space-between" p={2} position="relative">
-      {/* SEARCH BAR */}
+    <Box display="flex" justifyContent="space-between" alignItems="center" p={2} position="relative">
+      {/* ── Hamburger (mobile only) ─────────────────────────────────────── */}
+      {isMobile && (
+        <IconButton onClick={onMobileMenuOpen} sx={{ mr: 1, color: colors.grey[100] }}>
+          <MenuIcon />
+        </IconButton>
+      )}
+
+      {/* SEARCH BAR — hidden on small phones, responsive width */}
+      {!isSmall && (
       <Box
         display="flex"
         backgroundColor={colors.primary[400]}
         borderRadius="8px"
         position="relative"
-        width="350px"
+        sx={{ width: { xs: "160px", sm: "220px", md: "350px" } }}
       >
         <InputBase
           sx={{ ml: 2, flex: 1, color: colors.grey[100] }}
@@ -539,11 +551,14 @@ const Topbar = () => {
           </Paper>
         )}
       </Box>
+      )} {/* end !isSmall search bar */}
 
-      {/* WEATHER TICKER */}
-      <Box display="flex" alignItems="center" flex={1} justifyContent="center" px={2}>
-        <WeatherWidget />
-      </Box>
+      {/* WEATHER TICKER — hidden on mobile */}
+      {!isMobile && (
+        <Box display="flex" alignItems="center" flex={1} justifyContent="center" px={2}>
+          <WeatherWidget />
+        </Box>
+      )}
 
       {/* ICONS */}
       <Box display="flex" position="relative" ref={notifRef}>
@@ -590,8 +605,8 @@ const Topbar = () => {
             sx={{
               position: "absolute",
               top: "50px",
-              right: "100px",
-              width: "420px",
+              right: isMobile ? "0px" : "100px",
+              width: "min(420px, 95vw)",
               backgroundColor: colors.primary[400],
               color: colors.grey[100],
               borderRadius: "8px",
@@ -726,7 +741,7 @@ const Topbar = () => {
               position: "absolute",
               top: "50px",
               right: "20px",
-              width: 400,
+              width: "min(400px, 95vw)",
               backgroundColor: colors.primary[400],
               color: colors.grey[100],
               borderRadius: "12px",
@@ -895,7 +910,7 @@ const Topbar = () => {
                 position: "absolute",
                 top: "50px",
                 right: 0,
-                width: 420,
+                width: "min(420px, 95vw)",
                 backgroundColor: colors.primary[400],
                 color: colors.grey[100],
                 borderRadius: "12px",
@@ -1120,7 +1135,7 @@ const Topbar = () => {
             color: colors.grey[100],
             borderRadius: "12px",
             p: 1,
-            minWidth: 400,
+            minWidth: "min(400px, 90vw)",
             maxWidth: 500,
           },
         }}

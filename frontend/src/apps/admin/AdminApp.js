@@ -102,7 +102,7 @@ import StatusManagement from "./scenes/pages/StatusManagement";
 
 function AdminApp() {
   const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -110,9 +110,9 @@ function AdminApp() {
         <CssBaseline />
         <NotificationsProvider>
           <div className="app" style={{ backgroundColor: theme.palette.background.default }}>
-            <Sidebar isSidebar={isSidebar} />
+            <Sidebar mobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
             <main className="content" style={{ backgroundColor: theme.palette.background.default }}>
-              <Topbar setIsSidebar={setIsSidebar} />
+              <Topbar onMobileMenuOpen={() => setMobileOpen(true)} />
               <Routes>
               <Route index element={<Dashboard />} />
               <Route path="team" element={<Team />} />
