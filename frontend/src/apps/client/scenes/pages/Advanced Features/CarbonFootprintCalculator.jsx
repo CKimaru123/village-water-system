@@ -583,8 +583,20 @@ const CarbonFootprintCalculator = () => {
   // const carbonKg = data?.carbon_kg_co2 || data?.carbon_kg || 0;
   // const consumptionM3 = data?.consumption_m3 || 0;
 
-  const carbonKg = parseFloat(data?.carbon_kg_co2 ?? data?.carbon_kg ?? 0) || 0;
+  // const carbonKg = parseFloat(data?.carbon_kg_co2 ?? data?.carbon_kg ?? 0) || 0;
+  // const consumptionM3 = parseFloat(data?.consumption_m3 ?? 0) || 0;
+
+    const carbonKg    = parseFloat(data?.carbon_kg_co2  ?? data?.carbon_kg ?? 0) || 0;
   const consumptionM3 = parseFloat(data?.consumption_m3 ?? 0) || 0;
+
+  // Patch data object so all derived reads from data.* are also safe numbers
+  if (data) {
+    data.equivalent_trees   = parseFloat(data.equivalent_trees   ?? 0) || 0;
+    data.efficiency_rating  = parseFloat(data.efficiency_rating  ?? 0) || 0;
+    data.vs_community_avg   = parseFloat(data.vs_community_avg   ?? 0) || 0;
+    data.trees_planted      = parseFloat(data.trees_planted      ?? 0) || 0;
+  }
+
 
   // Use a demo baseline when API returns no data so the simulator is always interactive
   const DEMO_BASELINE = 18.5; // realistic average household kg CO₂e/month
