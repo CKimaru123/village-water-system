@@ -365,28 +365,19 @@ const HelpArticles = () => {
       {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>{error}</Alert>}
 
       {/* Source tabs */}
-      {/* <Tabs value={tab} onChange={(_, v) => { setTab(v); setActiveCategory("all"); }} sx={{
-        mb: 2,
-        "& .MuiTab-root": { color: colors.grey[400], textTransform: "none", minHeight: 40 },
-        "& .Mui-selected": { color: "#fff !important" },
-        "& .MuiTabs-indicator": { backgroundColor: colors.blueAccent[400] },
-      }}> */}
       <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 2,
         "& .MuiTab-root": { fontSize: "0.95rem", color: colors.grey[400] },
         "& .Mui-selected": { color: "#fff !important", backgroundColor: colors.blueAccent[700], borderRadius: "4px 4px 0 0" },
         "& .MuiTabs-indicator": { backgroundColor: colors.blueAccent[400] },
       }}>
-        <Tab icon={<ArticleIcon />} iconPosition="start"
+        <Tab icon={<ArticleIcon sx={{ fontSize: 18 }} />} iconPosition="start"
           label={`All (${allArticles.length})`} />
-        <Tab icon={<RssFeedIcon />} iconPosition="start"
+        <Tab icon={<RssFeedIcon sx={{ fontSize: 18 }} />} iconPosition="start"
           label={`Blog Posts (${blogPosts.length})`} />
-        <Tab icon={<MenuBookIcon />} iconPosition="start"
+        <Tab icon={<MenuBookIcon sx={{ fontSize: 18 }} />} iconPosition="start"
           label={`Knowledge Base (${kbArticles.length})`} />
       </Tabs>
-      {/* Filter Tabs */}
-      {/* sx={{ fontSize: 16 }}     */}
-
-
+      
       {loading ? (
         <Box display="flex" justifyContent="center" mt={4}>
           <CircularProgress sx={{ color: colors.blueAccent[500] }} />
