@@ -16,20 +16,20 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 
-// â”€â”€ Matches the exact categories used in /blogs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Matches the exact categories used in /blogs 
 const BLOG_CATEGORIES = [
-  { id: "all",                 name: "All",                        color: "#6870fa", icon: "ðŸ“‹" },
-  { id: "water-health",        name: "Water & Health",             color: "#2196F3", icon: "ðŸ’§" },
-  { id: "irrigation-farming",  name: "Irrigation & Farming",       color: "#4CAF50", icon: "ðŸŒ¾" },
-  { id: "livestock-aquaculture", name: "Livestock & Aquaculture",  color: "#FF9800", icon: "ðŸ„" },
-  { id: "home-solutions",      name: "Home Water Solutions",       color: "#9C27B0", icon: "ðŸ " },
-  { id: "trees-agroforestry",  name: "Trees & Agroforestry",       color: "#8BC34A", icon: "ðŸŒ³" },
-  { id: "tools-materials",     name: "Water Tools & Materials",    color: "#607D8B", icon: "ðŸ› ï¸" },
-  { id: "weather-climate",     name: "Weather & Climate",          color: "#00BCD4", icon: "ðŸŒ¤ï¸" },
-  { id: "government-policy",   name: "Government & Policy",        color: "#3F51B5", icon: "ðŸ›ï¸" },
-  { id: "community-culture",   name: "Community & Culture",        color: "#E91E63", icon: "â›ª" },
-  { id: "harvesting-storage",  name: "Water Harvesting & Storage", color: "#009688", icon: "ðŸ’§" },
-  { id: "sustainability",      name: "Sustainability & Environment", color: "#689F38", icon: "ðŸŒ±" },
+  { id: "all",                   name: "All",                          color: "#6870fa", icon: "📋" },
+  { id: "water-health",          name: "Water & Health",               color: "#2196F3", icon: "💧" },
+  { id: "irrigation-farming",    name: "Irrigation & Farming",         color: "#4CAF50", icon: "🌾" },
+  { id: "livestock-aquaculture", name: "Livestock & Aquaculture",      color: "#FF9800", icon: "🐄" },
+  { id: "home-solutions",        name: "Home Water Solutions",         color: "#9C27B0", icon: "🏠" },
+  { id: "trees-agroforestry",    name: "Trees & Agroforestry",         color: "#8BC34A", icon: "🌳" },
+  { id: "tools-materials",       name: "Water Tools & Materials",      color: "#607D8B", icon: "🛠️" },
+  { id: "weather-climate",       name: "Weather & Climate",            color: "#00BCD4", icon: "🌤️" },
+  { id: "government-policy",     name: "Government & Policy",          color: "#3F51B5", icon: "🏛️" },
+  { id: "community-culture",     name: "Community & Culture",          color: "#E91E63", icon: "⛪" },
+  { id: "harvesting-storage",    name: "Water Harvesting & Storage",   color: "#009688", icon: "🪣" },
+  { id: "sustainability",        name: "Sustainability & Environment", color: "#689F38", icon: "🌱" },
 ];
 
 // KB article categories (admin knowledge base)
