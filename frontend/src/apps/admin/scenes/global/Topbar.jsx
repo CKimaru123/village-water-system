@@ -95,6 +95,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next"; // 🌍 Added for translations
 import { useAuth } from "../../../../hooks/useAuth"; // Import useAuth hook
 import { useNotificationsContext } from "../../../../context/NotificationsContext";
+import WeatherWidget from "../../../../components/WeatherWidget";
 
 const pagesIndex = [
   { name: "Dashboard", path: "" },
@@ -511,6 +512,11 @@ const Topbar = () => {
             </List>
           </Paper>
         )}
+      </Box>
+
+      {/* WEATHER TICKER */}
+      <Box display="flex" alignItems="center" flex={1} justifyContent="center" px={2}>
+        <WeatherWidget />
       </Box>
 
       {/* ICONS */}
